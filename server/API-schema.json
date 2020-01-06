@@ -1,0 +1,50 @@
+
+{  
+    "Get /": {
+        "desc": "direct to homepae and display 10 last item created by users",
+        "responce":"200 application/jason",
+        "data":[{}, {}, {}]
+    }, 
+
+    "GET /api/user": {
+      "desc": "return a user",
+      "responce": "200 application/jason",
+      "data": {}
+    },
+    "POST /api/user": {
+      "desc": "create a user",
+      "responce": "201 application/jason",
+      "data": {}
+   },
+    "PUT /api/user/:id": {
+      "desc": "updat and return the matching user with the posted update object",
+      "responce": "200 application/jason",
+      "data": {}
+   },
+    "Delete /api/user/:id": {
+      "desc": "toggel the user to archive data and return it",
+      "responce": "200 application/jason",
+      "data": {}
+   },
+
+   "GET /api/item": {
+    "desc": "return a item",
+    "responce": "200 application/jason",
+    "data": {}
+  },
+  "POST /api/item": {
+    "desc": "create a item",
+    "responce": "201 application/jason",
+    "data": {}
+ },
+  "PUT /api/item/:id": {
+    "desc": "updat and return the matching item with the posted update object",
+    "responce": "200 application/jason",
+    "data": {}
+ },
+  "Delete /api/item/:id": {
+    "desc": "toggel the item to archive data and return it",
+    "responce": "200 application/jason",
+    "data": {}
+ }
+  }

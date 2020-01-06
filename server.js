@@ -17,9 +17,9 @@ module.exports = app;
 
 
 
-// app.get('/api/user', function(req, res, next) {
-//     console.log('Request Type:', req.method)
-//     res.status(200).send('You are doing a great job')
-//     next()
-// })
+app.get('/api/user', function(req, res, next) {
+    console.log('Request Type:', req.method)
+    res.status(200).send('You are doing a great job')
+    next()
+})
 

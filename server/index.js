@@ -1,8 +1,8 @@
-    
-// import app from '../server'
-const app = require('../server') 
+// const express = require('express')
+// const app = express() 
 
-    
+const app = require('../server.js')
+console.log(app)
 
 
 app.get('/api', function(req, res, next) {

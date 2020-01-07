@@ -12,7 +12,7 @@ router.post('/', function(req, res){
         "name":  req.body.name, 
         "description":req.body.description, 
         "photo":req.body.photo, 
-        "user":req.body.user,
+        "price":req.body.price,
         "available":req.body.available,
         "quantity":req.body.quantity, 
         "deactivated":req.body.deactivated, 
@@ -21,11 +21,12 @@ router.post('/', function(req, res){
 
     Item.create(data, function (err, items) {
         if (err) {
-            return next(err)
+            return console.log(err)
         } else {
             return res.status(400).send(error.details[0].message)
         }
         }); 
+        res.status(200)
 })
 
 router.patch('/', function(req, res){

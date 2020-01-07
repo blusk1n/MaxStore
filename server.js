@@ -8,8 +8,8 @@ const express           = require("express"),
     
 
 
+      app.get("*" , (req,res)=>res.sendFile(path.resolve("public" , "index.html")))
 app.use(express.static(__dirname + "/public"))
-app.get("*" , (req,res)=>res.sendFile(path.resolve("public" , "index.html")))
 app.listen(port)
 
 

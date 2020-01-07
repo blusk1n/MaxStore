@@ -9,20 +9,24 @@ window.http = http
 class App extends React.Component{
     constructor(){
         super()
+        this.state = {
+            token : null
+        }
     }
     render(){
         return (
         <div>
-        <Router>
+            {this.state.token? <Home /> : <Entrance />}
+        {/* <Router>
             <Link to="/home">
                 <li>Home</li>
             </Link>
             <Link to="/login">
                 <li>Entrance</li>
             </Link>
-            <Route path="/home" exact component={Home}/>
-            <Route path="/login" exact component={Entrance}/>
-        </Router>    
+            {<Route path="/home" exact component={Home}/>
+            <Route path="/login" exact component={Entrance}/>}
+        </Router>     */}
         </div>
         )
     }

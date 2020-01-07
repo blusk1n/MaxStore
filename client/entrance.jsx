@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import {Link} from "react-router-dom";
+import { BrowserRouter as Router, Link, Route} from "react-router-dom";
+import Signup from './signup.jsx';
+import Login from './login.jsx';
+import EntranceItems from './EntranceItems.jsx';
 import {
   Collapse,
   Navbar,
@@ -21,41 +24,26 @@ const Entrance = (props) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div>
-        hello
+    <Router>
       <Navbar color="light" light expand="md">
-        <NavbarBrand tag={Link} to="home">Home</NavbarBrand>
+        <NavbarBrand tag={Link} to="">Max</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="rightNav mr-auto" navbar>
+          <Nav className="rightNav ml-auto" navbar>
             <NavItem>
-              <NavLink tag={Link} to="home">Home</NavLink>
+              <NavLink tag={Link} to="signup">signup</NavLink>
             </NavItem>
             <NavItem>
-              {/* <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink> */}
+            <NavLink tag={Link} to="login">login</NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  Option 1
-                </DropdownItem>
-                <DropdownItem>
-                  Option 2
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  Reset
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          {/* <NavbarText>Simple Text</NavbarText> */}
         </Collapse>
       </Navbar>
-    </div>
+            <Route path="/" exact component={EntranceItems}/>
+            <Route path="/login" exact component={Login}/>
+            <Route path="/signup" exact component={Signup}/>
+    </Router>
   );
 }
 

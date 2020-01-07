@@ -43,4 +43,12 @@ router.patch('/', function(req, res){
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username
     const password = req.body.password
+    User.getUserByUsername(username, (err, user) => {
+        if(err) throw err
+        if(!user) {
+            return res.json({success: false, msg: 'User not found'})
+        }
+        
+        
+    })
 })

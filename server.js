@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+require('./config/passport')(passport)
 
 
 app.use('/api/users', users)

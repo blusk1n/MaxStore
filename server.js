@@ -12,3 +12,6 @@ app.use(express.static(__dirname + "/public"))
 app.get("*" , (req,res)=>res.sendFile(path.resolve("public" , "index.html")))
 app.listen(port)
 
+
+
+// money

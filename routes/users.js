@@ -40,3 +40,7 @@ router.patch('/', function(req, res){
 })
 
 
+router.post('/authenticate', (req, res, next) => {
+    const username = req.body.username
+    const password = req.body.password
+})

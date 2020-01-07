@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Schema = mongoose.Schema({
     username: {
         type: String,
@@ -38,4 +39,16 @@ const Schema = mongoose.Schema({
         default: false
     }
 });
+
+
+
+
+// module.exports.comparePassword = function(password, hash, callback) {
+//     bcrypt.compare(password, hash, (err, isMatch) => {
+//         if(err) throw err;
+//         callback(null, isMatch);
+//     })
+// }
+  
+  
 module.exports = mongoose.model('user', Schema)

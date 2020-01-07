@@ -2,7 +2,8 @@ const router = module.exports = require('express').Router()
 const User = require('../model/user.js')
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-
+const config = require('../config/database')
+const bcrypt = require('bcryptjs');
 router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
@@ -41,34 +42,31 @@ router.patch('/', function(req, res){
     res.json({"masd":"asda"})
 })
 
-
+// Authenticate
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username
     const password = req.body.password
-    User.getUserByUsername(username, (err, user) => {
+    User.findOne({username}, (err, user) => {
         if(err) throw err
         if(!user) {
             return res.json({success: false, msg: 'User not found'})
         }
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) {
+            user.password = undefined
+            const token = jwt.sign(user, config.secret, {
+                rexpiresIn: 604800 // 1 week
+            })
+            res.json({
+                success: true,
+                token: 'JWT ' + token,
+                user
+            })
+        } else {
+            return res.json({success: false, msg: 'Wrong password'})
+        }
+    })
         
-        User.comparePassword(password, user.password, (err, isMatch) => {
-            if (err) throw err;
-            if (isMatch) {
-                const token = jwt.sign(user, config.secret, {
-                    rexpiresIn: 604800 // 1week
-                })
-                res.json({
-                    success: true,
-                    token: 'JWT' + token,
-                    user: {
-                        id: user._id,
-                        name: user.username,
-                        email: user.email
-                    }
-                })
-            } else {
-                return res.json({success: false, msg: 'Wrong password'})
-            }
-        })
     })
 })

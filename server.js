@@ -8,7 +8,7 @@ const express           = require("express"),
 const passport = require('passport')
     
 
-
+mongoose.connect('mongodb://maxst0re:maxst0re@ds149676.mlab.com:49676/maxstore', { useNewUrlParser: true , useUnifiedTopology: true } , ()=>console.log("database is working")) 
 app.use(express.static(__dirname + "/public"))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); 

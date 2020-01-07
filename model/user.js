@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema({
-    firstName: {
+    username: {
+        type: String,
+        unique: true
+    },
+    firstname: {
         type: String,
         required: true
     },
-    middleName: String,
+    middlename: String,
     lastName: {
         type: String,
         required: true
     },
-    gender: {
-        type: String,
-        required: true
-    },
-    mobileNumber: {
+    gender: String,
+    mobilenumber: {
         type: Number,
         unique: true
     },
@@ -25,10 +26,16 @@ const Schema = mongoose.Schema({
         type: String,
         required: true
     },
-    age: {
-        type: String,
+    address: String,
+    photo: String,
+    description: String,
+    birthdate: {
+        type: Date,
         required: true
     },
-    products: String
+    deactivated: {
+        type: Boolean,
+        default: false
+    }
 });
 module.exports = mongoose.model('user', Schema)

@@ -8,11 +8,11 @@ const Schema = mongoose.Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
+    photo: {
+        type: String,
         required: true
     },
-    retailer: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
@@ -20,6 +20,22 @@ const Schema = mongoose.Schema({
         type: Number,
         required: true
     },
+    available: {
+        type: Boolean,
+        default: true
+    },
+    quantity: {
+        type: Number,
+        default: 1
+    },
+    deactivated: {
+        type: Boolean,
+        default: false
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'category'
+    }
 });
 
 module.exports = mongoose.model('item', Schema)

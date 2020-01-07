@@ -1,6 +1,14 @@
-const route = module.exports = require('express').Router()
+const router = module.exports = require('express').Router()
 
 
-route.get('/', function(req, res) {
-    res.json({"route":"/items"})
+router.get('/', function(req, res){
+    res.json({"masd":"asda"})
+})
+
+router.post('/', function(req, res){
+    res.json({"masd":"asda"})
+})
+
+router.patch('/', function(req, res){
+    res.json({"masd":"asda"})
 })

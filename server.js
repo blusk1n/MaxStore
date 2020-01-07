@@ -10,19 +10,15 @@ const express           = require("express"),
 
 
 app.use(express.static(__dirname + "/public"))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true})); 
+
+
 app.use('/api/users', users)
-// app.use(bodyParser.json());
 app.use('/api/items', items)
 app.listen(port, () => console.log(`app running on port ${port}`))
 
 
 
 
-
-
-// app.get('/api', function(req, res, next) {
-//     console.log('Request Type:', req.method)
-//     res.status(200).send('You are doing')
-//     next()
-// })
 

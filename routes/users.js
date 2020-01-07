@@ -12,35 +12,53 @@ router.get('/:id', function(req, res){
     //fitch user fron Db
     
 })
-router.post('/', function(req, res){
-    if (error) {
-        return res.status(400).send(error.details[0].message)
-    }
-    else{
-        var name = req.body.name; 
-        var email =req.body.email; 
-        var pass = req.body.password; 
-        var phone =req.body.phone; 
-    
-        var data = { 
-            "name": name, 
-            "email":email, 
-            "password":pass, 
-            "phone":phone 
+router.post('/', (req, res) => {
+    bcrypt.hash(req.body.password , 10 , (err, hash)=>{
+        if (err) res.json({err})
+        else{
+            req.body.password = hash
+            User.create(req.body , (err,created)=> {
+                if (err) return res.json({err})
+                created.password = undefined
+                res.json({created})
+            })
+
         }
-        User.create(userData, function (err, user) {
-            if (err) {
-              return next(err)
-            } else {
-              return res.status(400).send(error.details[0].message)
-            }
-          }); 
-    }
+    } )
+    
 })
+// router.post('/', function(req, res){
+//     if (error) {
+//         return res.status(400).send(error.details[0].message)
+//     }
+//     else{
+//         var name = req.body.name; 
+//         var email =req.body.email; 
+//         var pass = req.body.password; 
+//         var phone =req.body.phone; 
+    
+//         var data = { 
+//             "name": name, 
+//             "email":email, 
+//             "password":pass, 
+//             "phone":phone 
+//         }
+//         User.create(userData, function (err, user) {
+//             if (err) {
+//               return next(err)
+//             } else {
+//               return res.status(400).send(error.details[0].message)
+//             }
+//           }); 
+//     }
+// })
 
 router.patch('/', function(req, res){
     res.json({"masd":"asda"})
 })
+
+
+
 
 // Authenticate
 router.post('/authenticate', (req, res, next) => {
@@ -55,8 +73,8 @@ router.post('/authenticate', (req, res, next) => {
         if (err) throw err;
         if (isMatch) {
             user.password = undefined
-            const token = jwt.sign(user, config.secret, {
-                rexpiresIn: 604800 // 1 week
+            const token = jwt.sign(JSON.stringify(user), config.secret, {
+                // expiresIn: 604800 // 1 week
             })
             res.json({
                 success: true,

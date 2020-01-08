@@ -10,7 +10,7 @@ router.get('/', function(req, res){
 
 router.get('/:id', function(req, res){
     
-    Item.find({_id: req.params._id}, function(err, item) {
+    Item.find({_id: req.params.id}, function(err, item) {
         res.send(item)
     })
 })

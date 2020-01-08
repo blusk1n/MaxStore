@@ -6,6 +6,8 @@ const passport = require('passport');
 const config = require('../config/database')
 const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
+
+
 router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
@@ -40,7 +42,7 @@ router.post('/', (req, res) => {
             })
 
         }
-    } )
+    })
     
 })
 
@@ -69,8 +71,23 @@ router.get('/:id/followings', function(req, res) {
     })
 })
 
-router.patch('/', function(req, res){
-    res.json({"masd":"asda"})
+
+
+router.patch('/:id', (req, res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, user){
+        if (err) {
+            res.send({success: false, err})
+        } else { 
+            if(!user) {
+                res.send({success: false, message: 'Not found'})
+            } else {
+                res.send(user)
+            }
+        }
+       
+        
+        
+    })
 })
 
 

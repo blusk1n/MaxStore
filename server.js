@@ -30,10 +30,3 @@ app.get('/api/token' , passport.authenticate("jwt" , {session : false}) , (req,r
 })
 app.get("*" , (req,res)=>res.sendFile(path.resolve("public" , "index.html")))
 app.listen(port, () => console.log(`app running on port ${port}`))
-
-
-
-
-
-
-// money

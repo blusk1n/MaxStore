@@ -8,8 +8,8 @@ const express           = require("express"),
       path              = require("path"),
       port              = process.env.PORT || 3000
     
-
-mongoose.connect('mongodb://maxst0re:maxst0re@ds149676.mlab.com:49676/maxstore', { useNewUrlParser: true , useUnifiedTopology: true } , ()=>console.log("database is working")) 
+mongoose.connect('mongodb://localhost/Maxshop' , {  useUnifiedTopology: true } , ()=>console.log("database is working"));
+// mongoose.connect('mongodb://maxst0re:maxst0re@ds149676.mlab.com:49676/maxstore', { useNewUrlParser: true , useUnifiedTopology: true } , ()=>console.log("database is working")) 
 app.use(express.static(__dirname + "/public"))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); 

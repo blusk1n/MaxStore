@@ -2,8 +2,15 @@ const router = module.exports = require('express').Router()
 const Item = require('../model/item.js')
 
 
-router.get('/', function(req, res){
-    res.json({"masd":"asda"})
+router.get('/', function(req, res ,callback){
+        Item.find({}, function(err, items) {
+          if(err) {
+            callback(err, null);
+          } else {
+            callback(null, items);
+          }
+        });
+      
 })
 
 router.post('/', function(req, res){
@@ -19,16 +26,17 @@ router.post('/', function(req, res){
         "category":req.body.category
     }
 
-    Item.create(data, function (err, items) {
+    Item.create(data, function (err, items, next) {
         if (err) {
-            return console.log(err)
+            return next(err)
+            // callback(err, null);
         } else {
-            return res.status(400).send(error.details[0].message)
+            return res.status(400).send(err)
         }
         }); 
         res.status(200)
 })
 
-router.patch('/', function(req, res){
+router.patch('/:id', function(req, res){
     res.json({"masd":"asda"})
 })

@@ -10,6 +10,15 @@ router.get('/', function(req, res){
 
 router.get('/:id', function(req, res){
     //fitch user fron Db
+   User.findById(req.param.id, function(err, user, next) {
+       if(err){
+           return next(err)
+       }else{
+           console.log(user)
+           res.json(user)
+       }
+
+   })
     
 })
 router.post('/', (req, res) => {
@@ -27,31 +36,32 @@ router.post('/', (req, res) => {
     } )
     
 })
-// router.post('/', function(req, res){
-//     if (error) {
-//         return res.status(400).send(error.details[0].message)
-//     }
-//     else{
-//         var name = req.body.name; 
-//         var email =req.body.email; 
-//         var pass = req.body.password; 
-//         var phone =req.body.phone; 
-    
-//         var data = { 
-//             "name": name, 
-//             "email":email, 
-//             "password":pass, 
-//             "phone":phone 
-//         }
-//         User.create(userData, function (err, user) {
-//             if (err) {
-//               return next(err)
-//             } else {
-//               return res.status(400).send(error.details[0].message)
-//             }
-//           }); 
-//     }
-// })
+//add user
+router.post('/', function(req, res){
+   
+        var data = { 
+            "username": req.body.username, 
+            "firstname":req.body.firstname, 
+            "lastname":req.body.lastname, 
+            "gender":req.body.gender,
+            "phone":req.body.phone, 
+            "email":req.body.email, 
+            "password":req.body.password,
+            "address":req.body.address, 
+            "photo":req.body.photo, 
+            "bio":req.body.bio, 
+            "birthdate":req.body.birthdate,
+            "deactivated":req.body.deactivated  
+        }
+
+        User.create(data, function (err, user, next) {
+            if (err) {
+              return next(err)
+            } else {
+               console.log('im tgere')
+            }
+          });     
+})
 
 router.patch('/', function(req, res){
     res.json({"masd":"asda"})

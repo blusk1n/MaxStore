@@ -22,10 +22,9 @@ const Entrance = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-
   return (
     <Router>
-      <Navbar color="light" light expand="md">
+      <Navbar fixed={"top"} color="light" light expand="md">
         <NavbarBrand tag={Link} to="">Max</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -40,8 +39,10 @@ const Entrance = (props) => {
           {/* <NavbarText>Simple Text</NavbarText> */}
         </Collapse>
       </Navbar>
+            <div className="my-4 py-4"></div>
+
             <Route path="/" exact component={EntranceItems}/>
-            <Route path="/login" exact component={Login}/>
+            <Route path="/login" exact  component={()=> <Login rerender={props.rerender} />}/>
             <Route path="/signup" exact component={Signup}/>
     </Router>
   );

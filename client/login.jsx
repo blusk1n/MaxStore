@@ -11,8 +11,8 @@ import {
 } from "reactstrap";
 import http from "./http.jsx";
 class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       alert: false,
       msg: null
@@ -28,7 +28,8 @@ class Login extends React.Component {
       });
       http.post("/api/users/authenticate", json, data => {
         if (data.success) {
-          console.log(data);
+          localStorage.setItem("token" , data.token);
+          this.props.rerender()
         } else {
           this.setState({ msg: data.msg, alert : true });
           setTimeout(() => {
@@ -79,7 +80,7 @@ class Login extends React.Component {
             </Col>
           </Row>
           <Button className="btn-block" onClick={this.submitForm.bind(this)}>
-            Sign in
+            Log in
           </Button>
         </Form>
       </div>

@@ -2,16 +2,27 @@ const router = module.exports = require('express').Router()
 const Item = require('../model/item.js')
 
 
-router.get('/', function(req, res ,callback){
-        Item.find({}, function(err, items) {
-          if(err) {
-            callback(err, null);
-          } else {
-            callback(null, items);
-          }
-        });
-      
+router.get('/', function(req, res){
+    Item.find({}, function (err, item) {
+        res.send(item)
+    });
 })
+
+router.get('/:id', function(req, res){
+    
+    Item.find({_id: req.params.id}, function(err, item) {
+        res.send(item)
+    })
+})
+
+// router.get('/:id', function(req, res) {
+    
+//     Item.find({_id: req.params.id}, function(err, item) {
+//         item.deactivated = false
+        
+//         res.send(item)
+//     })
+// })
 
 router.post('/', function(req, res){
     
@@ -34,7 +45,7 @@ router.post('/', function(req, res){
             return res.status(400).send(err)
         }
         }); 
-        res.status(200)
+        res.status(200).send({message: 'done'})
 })
 
 router.patch('/:id', function(req, res){

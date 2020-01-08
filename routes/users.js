@@ -8,8 +8,9 @@ router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
 
+
 router.get('/:id', function(req, res){
-    //fitch user fron Db
+    //fitch user fron Dbrgh
    User.findById(req.param.id, function(err, user, next) {
        if(err){
            return next(err)

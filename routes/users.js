@@ -73,11 +73,22 @@ router.get('/:id/followings', function(req, res) {
 
 
 
-
-router.patch('/:id', function(req, res){
-    res.json({"masd":"asda"})
+router.patch('/:id', (req, res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, user){
+        if (err) {
+            res.send({success: false, err})
+        } else { 
+            if(!user) {
+                res.send({success: false, message: 'Not found'})
+            } else {
+                res.send(user)
+            }
+        }
+       
+        
+        
+    })
 })
-
 
 
 

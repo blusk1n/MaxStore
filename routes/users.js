@@ -37,31 +37,6 @@ router.post('/', (req, res) => {
     
 })
 //add user
-router.post('/', function(req, res){
-   
-        var data = { 
-            "username": req.body.username, 
-            "firstname":req.body.firstname, 
-            "lastname":req.body.lastname, 
-            "gender":req.body.gender,
-            "phone":req.body.phone, 
-            "email":req.body.email, 
-            "password":req.body.password,
-            "address":req.body.address, 
-            "photo":req.body.photo, 
-            "bio":req.body.bio, 
-            "birthdate":req.body.birthdate,
-            "deactivated":req.body.deactivated  
-        }
-
-        User.create(data, function (err, user, next) {
-            if (err) {
-              return next(err)
-            } else {
-               console.log('im tgere')
-            }
-          });     
-})
 
 router.patch('/', function(req, res){
     res.json({"masd":"asda"})
@@ -83,8 +58,8 @@ router.post('/authenticate', (req, res, next) => {
         if (err) throw err;
         if (isMatch) {
             user.password = undefined
-            const token = jwt.sign(JSON.stringify(user), config.secret, {
-                // expiresIn: 604800 // 1 week
+            const token = jwt.sign(user.toJSON(), config.secret, {
+                expiresIn: 604800 // 1 week
             })
             res.json({
                 success: true,

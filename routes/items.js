@@ -26,9 +26,9 @@ router.post('/', function(req, res){
         "category":req.body.category
     }
 
-    Item.create(data, function (err, items, callback) {
+    Item.create(data, function (err, items, next) {
         if (err) {
-            return console.log(err)
+            return next(err)
             // callback(err, null);
         } else {
             return res.status(400).send(err)

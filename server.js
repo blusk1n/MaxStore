@@ -4,16 +4,12 @@ const express           = require("express"),
       app               = express(),
       users             = require('./routes/users.js'),
       items             = require('./routes/items.js'),
-<<<<<<< HEAD
-      path              = require('path')
-=======
       path              = require("path"),
->>>>>>> 384e4e0e9e371ff5016bf89912895ef85017cba5
       port              = process.env.PORT || 3000
 const passport = require('passport')
     
-
-mongoose.connect('mongodb://maxst0re:maxst0re@ds149676.mlab.com:49676/maxstore', { useNewUrlParser: true , useUnifiedTopology: true } , ()=>console.log("database is working")) 
+mongoose.connect('mongodb://localhost/Maxshop' , {  useUnifiedTopology: true } , ()=>console.log("database is working"));
+// mongoose.connect('mongodb://maxst0re:maxst0re@ds149676.mlab.com:49676/maxstore', { useNewUrlParser: true , useUnifiedTopology: true } , ()=>console.log("database is working")) 
 app.use(express.static(__dirname + "/public"))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); 

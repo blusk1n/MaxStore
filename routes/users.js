@@ -1,8 +1,10 @@
 const router = module.exports = require('express').Router()
 const User = require('../model/user.js')
+const Follow = require('../model/following.js')
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const config = require('../config/database')
+const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
 
 
@@ -10,19 +12,24 @@ router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
 
+
+
 router.get('/:id', function(req, res){
-    //fitch user fron Db
-   User.findById(req.param.id, function(err, user, next) {
+    //fitch user fron Dbrgh
+   User.findById(req.params.id, function(err, user) {
        if(err){
-           return next(err)
+         res.json({err})
+         throw err
        }else{
-           console.log(user)
-           res.json(user)
+          res.json({user})
        }
 
    })
     
 })
+
+
+//add user
 router.post('/', (req, res) => {
     bcrypt.hash(req.body.password , 10 , (err, hash)=>{
         if (err) res.json({err})
@@ -39,6 +46,30 @@ router.post('/', (req, res) => {
     
 })
 
+//add folowers
+router.get('/follow', function(req, res) {
+    Follow.create(req.body, function(err, user) {
+        if (err) res.json({success: false, err})
+        else res.json({success:true})
+        
+    })
+})
+
+//find folowers
+router.get('/:id/followers', function(req, res) {
+    Follow.find({followed: ObjectId(req.params.id)}).populate("follower").exec(function(err, data) {
+        if (err) res.json({success: false, err})
+        else res.json({success:true, data})
+    })
+})
+
+//find following
+router.get('/:id/followings', function(req, res) {
+    Follow.find({follower: ObjectId(req.params.id)}).populate("followed").exec(function(err, data) {
+        if (err) res.json({success: false, err})
+        else res.json({success:true, data})
+    })
+})
 
 
 

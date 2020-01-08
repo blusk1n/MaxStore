@@ -2,49 +2,50 @@
 {  
     "Get /": {
         "desc": "direct to homepae and display 10 last item created by users",
-        "responce":"200 application/jason",
+        "example":"/items?limit=10",
+        "responce":"200 application/jason || error ",
         "data":[{}, {}, {}]
     }, 
 
-    "GET /api/users": {
+    "GET /api/users/:id": {
       "desc": "return users",
-      "responce": "200 application/jason",
+      "responce": "200 application/jason || error ",
       "data": {}
     },
     "POST /api/users": {
       "desc": "create a user",
-      "responce": "201 application/jason",
+      "responce": "201 application/jason || error ",
       "data": {}
    },
     "PATCH /api/users/:id": {
       "desc": "updat and return the matching users with the posted update object",
-      "responce": "200 application/jason",
+      "responce": "200 application/jason || error " ,
       "data": {}
    },
     "Delete /api/users/:id": {
       "desc": "toggel the users to archive data and return it",
-      "responce": "200 application/jason",
+      "responce": "204 No Content, application/jason || error ",
       "data": {}
    },
 
    "GET /api/items": {
     "desc": "return a items",
-    "responce": "200 application/jason",
+    "responce": "200 application/jason || error ",
     "data": {}
   },
   "POST /api/items": {
     "desc": "create a items",
-    "responce": "201 application/jason",
+    "responce": "201 application/jason || error ",
     "data": {}
  },
   "PUT /api/items/:id": {
     "desc": "updat and return the matching items with the posted update object",
-    "responce": "200 application/jason",
+    "responce": "200 application/jason || error ",
     "data": {}
  },
   "Delete /api/items/:id": {
     "desc": "toggel the item to archive data and return it",
-    "responce": "200 application/jason",
+    "responce": "204 No Content, application/jason || error ",
     "data": {}
  }
   }

@@ -3,7 +3,8 @@ const express           = require("express"),
       mongoose          = require("mongoose"),
       app               = express(),
       users             = require('./routes/users.js'),
-      items             = require('./routes/items.js')
+      items             = require('./routes/items.js'),
+      path              = require('path')
       port              = process.env.PORT || 3000
 const passport = require('passport')
     

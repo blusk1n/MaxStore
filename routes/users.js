@@ -4,6 +4,25 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const config = require('../config/database')
 const bcrypt = require('bcryptjs');
+
+router.patch('/:id', (req, res) => {
+    User.findById(req.params.id, (err, user) => {
+        if (err) {
+            console.log(err)
+            res.send({success: false, err})
+        } else { 
+            if(!user) {
+                res.send({success: false, message: 'Not found'})
+            } else {
+                console.log(req.body)
+                
+            }
+        }
+       
+        
+        res.send({user})
+    })
+})
 router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
@@ -33,38 +52,10 @@ router.post('/', (req, res) => {
             })
 
         }
-    } )
+    })
     
 })
-<<<<<<< HEAD
-=======
-//add user
-router.post('/', function(req, res){
-   
-        var data = { 
-            "username": req.body.username, 
-            "firstname":req.body.firstname, 
-            "lastname":req.body.lastname, 
-            "gender":req.body.gender,
-            "phone":req.body.phone, 
-            "email":req.body.email, 
-            "password":req.body.password,
-            "address":req.body.address, 
-            "photo":req.body.photo, 
-            "bio":req.body.bio, 
-            "birthdate":req.body.birthdate,
-            "deactivated":req.body.deactivated  
-        }
 
-        User.create(data, function (err, user, next) {
-            if (err) {
-              return next(err)
-            } else {
-               console.log('im tgere')
-            }
-          });     
-})
->>>>>>> 0aab5abc61eaa31d8bfc8652d02b9d32a04b946d
 
 
 

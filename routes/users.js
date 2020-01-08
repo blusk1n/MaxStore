@@ -1,46 +1,80 @@
 const router = module.exports = require('express').Router()
 const User = require('../model/user.js')
+const Follow = require('../model/following.js')
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const config = require('../config/database')
+const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
 router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
 
+
+
 router.get('/:id', function(req, res){
-    //fitch user fron Db
+    //fitch user fron Dbrgh
+   User.findById(req.params.id, function(err, user) {
+       if(err){
+         res.json({err})
+         throw err
+       }else{
+          res.json({user})
+       }
+
+   })
     
 })
-router.post('/', function(req, res){
-    if (error) {
-        return res.status(400).send(error.details[0].message)
-    }
-    else{
-        var name = req.body.name; 
-        var email =req.body.email; 
-        var pass = req.body.password; 
-        var phone =req.body.phone; 
-    
-        var data = { 
-            "name": name, 
-            "email":email, 
-            "password":pass, 
-            "phone":phone 
+
+
+//add user
+router.post('/', (req, res) => {
+    bcrypt.hash(req.body.password , 10 , (err, hash)=>{
+        if (err) res.json({err})
+        else{
+            req.body.password = hash
+            User.create(req.body , (err,created)=> {
+                if (err) return res.json({err})
+                created.password = undefined
+                res.json({created})
+            })
+
         }
-        User.create(userData, function (err, user) {
-            if (err) {
-              return next(err)
-            } else {
-              return res.status(400).send(error.details[0].message)
-            }
-          }); 
-    }
+    } )
+    
+})
+
+//add folowers
+router.get('/follow', function(req, res) {
+    Follow.create(req.body, function(err, user) {
+        if (err) res.json({success: false, err})
+        else res.json({success:true})
+        
+    })
+})
+
+//find folowers
+router.get('/:id/followers', function(req, res) {
+    Follow.find({followed: ObjectId(req.params.id)}).populate("follower").exec(function(err, data) {
+        if (err) res.json({success: false, err})
+        else res.json({success:true, data})
+    })
+})
+
+//find following
+router.get('/:id/followings', function(req, res) {
+    Follow.find({follower: ObjectId(req.params.id)}).populate("followed").exec(function(err, data) {
+        if (err) res.json({success: false, err})
+        else res.json({success:true, data})
+    })
 })
 
 router.patch('/', function(req, res){
     res.json({"masd":"asda"})
 })
+
+
+
 
 // Authenticate
 router.post('/authenticate', (req, res, next) => {
@@ -55,12 +89,12 @@ router.post('/authenticate', (req, res, next) => {
         if (err) throw err;
         if (isMatch) {
             user.password = undefined
-            const token = jwt.sign(user, config.secret, {
-                rexpiresIn: 604800 // 1 week
+            const token = jwt.sign(JSON.stringify(user), config.secret, {
+                // expiresIn: 604800 // 1 week
             })
             res.json({
                 success: true,
-                token: 'JWT ' + token,
+                token: 'jwt ' + token,
                 user
             })
         } else {

@@ -88,7 +88,7 @@ router.post('/authenticate', (req, res, next) => {
             })
             res.json({
                 success: true,
-                token: 'JWT ' + token,
+                token: 'jwt ' + token,
                 user
             })
         } else {

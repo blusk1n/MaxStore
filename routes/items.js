@@ -5,7 +5,8 @@ const Review = require('../model/review.js')
 
 router.patch('/:id', function (req, res) {
 
-    Item.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
+
+ Item.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
         if (err) {
             return res.send(err)
         } else {
@@ -59,3 +60,4 @@ router.get('/:id/reviews', function (req, res) {
         }
     });
 })
+

@@ -5,24 +5,7 @@ const passport = require('passport');
 const config = require('../config/database')
 const bcrypt = require('bcryptjs');
 
-router.patch('/:id', (req, res) => {
-    User.findById(req.params.id, (err, user) => {
-        if (err) {
-            console.log(err)
-            res.send({success: false, err})
-        } else { 
-            if(!user) {
-                res.send({success: false, message: 'Not found'})
-            } else {
-                console.log(req.body)
-                
-            }
-        }
-       
-        
-        res.send({user})
-    })
-})
+
 router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })

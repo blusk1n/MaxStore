@@ -9,19 +9,23 @@ router.get('/', function(req, res){
 })
 
 
+
 router.get('/:id', function(req, res){
     //fitch user fron Dbrgh
-   User.findById(req.param.id, function(err, user, next) {
+   User.findById(req.params.id, function(err, user) {
        if(err){
-           return next(err)
+         res.json({err})
+         throw err
        }else{
-           console.log(user)
-           res.json(user)
+          res.json({user})
        }
 
    })
     
 })
+
+
+//add user
 router.post('/', (req, res) => {
     bcrypt.hash(req.body.password , 10 , (err, hash)=>{
         if (err) res.json({err})
@@ -37,31 +41,26 @@ router.post('/', (req, res) => {
     } )
     
 })
-//add user
-router.post('/', function(req, res){
-   
-        var data = { 
-            "username": req.body.username, 
-            "firstname":req.body.firstname, 
-            "lastname":req.body.lastname, 
-            "gender":req.body.gender,
-            "phone":req.body.phone, 
-            "email":req.body.email, 
-            "password":req.body.password,
-            "address":req.body.address, 
-            "photo":req.body.photo, 
-            "bio":req.body.bio, 
-            "birthdate":req.body.birthdate,
-            "deactivated":req.body.deactivated  
-        }
 
-        User.create(data, function (err, user, next) {
-            if (err) {
-              return next(err)
-            } else {
-               console.log('im tgere')
-            }
-          });     
+//create folowers
+router.get('/:id/followers/add', function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        
+    })
+})
+
+//find folowers
+router.get('/:id/followers', function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        
+    })
+})
+
+//find following
+router.get('/:id/followers', function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        
+    })
 })
 
 router.patch('/', function(req, res){

@@ -10,31 +10,30 @@ const Schema = mongoose.Schema({
         type: String,
         required: true
     },
-    middlename: String,
     lastname: {
         type: String,
         required: true
     },
     gender: String,
-    // mobilenumber: {
-    //     type: Number,
-    //     unique: true
-    // },
-    // email: {
-    //     type: String,
-    //     required: true
-    // },
+    phone: {
+        type: Number,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
     },
     address: String,
     photo: String,
-    description: String,
-    // birthdate: {
-    //     type: Date,
-    //     required: true
-    // },
+    bio: String,
+    birthdate: {
+        type: Date,
+        required: true
+    },
     deactivated: {
         type: Boolean,
         default: false

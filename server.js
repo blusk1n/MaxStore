@@ -4,7 +4,11 @@ const express           = require("express"),
       app               = express(),
       users             = require('./routes/users.js'),
       items             = require('./routes/items.js'),
+<<<<<<< HEAD
       path              = require('path')
+=======
+      path              = require("path"),
+>>>>>>> 384e4e0e9e371ff5016bf89912895ef85017cba5
       port              = process.env.PORT || 3000
 const passport = require('passport')
     

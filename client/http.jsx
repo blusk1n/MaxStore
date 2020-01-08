@@ -6,7 +6,6 @@ http.get = function(route, query, callback){
     }
 
     var headers = {"authorization" : localStorage.getItem("token")}
-    console.log(route , query , headers)
     fetch(route + query, {headers}).then(res=>{
         res.json().then(data => callback(null,data)).catch(err => callback(err,null))
     }).catch(err => callback(err , null))

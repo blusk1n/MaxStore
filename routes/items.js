@@ -15,6 +15,15 @@ router.get('/:id', function(req, res){
     })
 })
 
+// router.get('/:id', function(req, res) {
+    
+//     Item.find({_id: req.params.id}, function(err, item) {
+//         item.deactivated = false
+        
+//         res.send(item)
+//     })
+// })
+
 router.post('/', function(req, res){
     
     var data = { 

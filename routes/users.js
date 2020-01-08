@@ -27,35 +27,14 @@ router.post('/', (req, res) => {
     } )
     
 })
-// router.post('/', function(req, res){
-//     if (error) {
-//         return res.status(400).send(error.details[0].message)
-//     }
-//     else{
-//         var name = req.body.name; 
-//         var email =req.body.email; 
-//         var pass = req.body.password; 
-//         var phone =req.body.phone; 
-    
-//         var data = { 
-//             "name": name, 
-//             "email":email, 
-//             "password":pass, 
-//             "phone":phone 
-//         }
-//         User.create(userData, function (err, user) {
-//             if (err) {
-//               return next(err)
-//             } else {
-//               return res.status(400).send(error.details[0].message)
-//             }
-//           }); 
-//     }
-// })
 
-router.patch('/', function(req, res){
+
+
+
+router.patch('/:id', function(req, res){
     res.json({"masd":"asda"})
 })
+
 
 
 

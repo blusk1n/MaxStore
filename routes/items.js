@@ -3,7 +3,16 @@ const Item = require('../model/item.js')
 
 
 router.get('/', function(req, res){
-    res.json({"masd":"asda"})
+    Item.find({}, function (err, item) {
+        res.send(item)
+    });
+})
+
+router.get('/:id', function(req, res){
+    
+    Item.find({_id: req.params._id}, function(err, item) {
+        res.send(item)
+    })
 })
 
 router.post('/', function(req, res){
@@ -21,12 +30,12 @@ router.post('/', function(req, res){
 
     Item.create(data, function (err, items) {
         if (err) {
-            return console.log(err)
+            return console.log('err')
         } else {
-            return res.status(400).send(error.details[0].message)
+            return console.log('Done')
         }
         }); 
-        res.status(200)
+        res.status(200).send({message: 'done'})
 })
 
 router.patch('/', function(req, res){

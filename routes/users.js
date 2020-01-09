@@ -110,6 +110,7 @@ router.post('/:id/items', function (req, res) {
     });
 })
 
+
 router.patch('/:id/toggle', function (req, res) {
 
     User.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {

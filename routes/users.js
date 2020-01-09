@@ -6,6 +6,12 @@ const passport = require('passport');
 const config = require('../config/database')
 const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
+const Items = require('../model/item')
+const express = require('express')
+const app = express()
+
+
+
 router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
@@ -25,8 +31,6 @@ router.get('/:id', function(req, res){
    })
     
 })
-
-
 //add user
 router.post('/', (req, res) => {
     bcrypt.hash(req.body.password , 10 , (err, hash)=>{
@@ -40,7 +44,7 @@ router.post('/', (req, res) => {
             })
 
         }
-    } )
+    })
     
 })
 
@@ -69,14 +73,27 @@ router.get('/:id/followings', function(req, res) {
     })
 })
 
-router.patch('/', function(req, res){
-    res.json({"masd":"asda"})
+
+
+router.patch('/:id', (req, res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, user){
+        if (err) {
+            res.send({success: false, err})
+        } else { 
+            if(!user) {
+                res.send({success: false, message: 'Not found'})
+            } else {
+                res.send(user)
+            }
+        }
+       
+        
+        
+    })
 })
 
 
 
-
-// Authenticate
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username
     const password = req.body.password
@@ -89,8 +106,8 @@ router.post('/authenticate', (req, res, next) => {
         if (err) throw err;
         if (isMatch) {
             user.password = undefined
-            const token = jwt.sign(JSON.stringify(user), config.secret, {
-                // expiresIn: 604800 // 1 week
+            const token = jwt.sign(user.toJSON(), config.secret, {
+                expiresIn: 604800 // 1 week
             })
             res.json({
                 success: true,
@@ -102,5 +119,29 @@ router.post('/authenticate', (req, res, next) => {
         }
     })
         
+    })})
+
+  
+  
+router.patch('/:id/toggle', function (req, res) {
+
+    User.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
+        if (err) {
+            return res.send(err)
+        } else {
+            return res.send(items)
+        }
+    });
+})
+
+
+// Get all user's items 
+
+router.get('/:id/items', (req, res) => {
+    // console.log(req.params.id)
+    // res.send(req.params.id)
+    Items.find({user: req.params.id}, (err, items) => {
+        if (err) res.send({message: err})
+        res.send(items)
     })
 })

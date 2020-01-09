@@ -120,4 +120,15 @@ router.post('/authenticate', (req, res, next) => {
     })
         
     })
+  
+  
+router.patch('/:id/toggle', function (req, res) {
+
+    User.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
+        if (err) {
+            return res.send(err)
+        } else {
+            return res.send(items)
+        }
+    });
 })

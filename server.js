@@ -23,7 +23,7 @@ require('./config/passport')(passport)
 app.use('/api/users', users)
 app.use('/api/items', items)
 app.get('/api/token' , passport.authenticate("jwt" , {session : false}) , (req,res)=>{
-    res.json({success : true})
+    res.json({success : true, user:req.user})
 })
 app.get("*" , (req,res)=>res.sendFile(path.resolve("public" , "index.html")))
 app.listen(port, () => console.log(`app running on port ${port}`))

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Col,
   Row,
@@ -79,7 +80,7 @@ class Login extends React.Component {
               </FormGroup>
             </Col>
           </Row>
-          <Button className="btn-block" onClick={this.submitForm.bind(this)}>
+          <Button tag={Link} to="" className="btn-block" onClick={this.submitForm.bind(this)}>
             Log in
           </Button>
         </Form>

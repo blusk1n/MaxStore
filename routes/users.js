@@ -1,20 +1,35 @@
 const router = module.exports = require('express').Router()
 const User = require('../model/user.js')
+const Follow = require('../model/following.js')
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const config = require('../config/database');
-const ObjectId = require('mongodb').ObjectID;
+const config = require('../config/database')
+const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
-const Item = require('../model/item.js');
+
+
+
 
 router.get('/', function (req, res) {
     res.json({ "masd": "asda" })
 })
 
+
+
 router.get('/:id', function (req, res) {
-    //fitch user fron Db
+    //fitch user fron Dbrgh
+    User.findById(req.params.id, function (err, user) {
+        if (err) {
+            res.json({ err })
+            throw err
+        } else {
+            res.json({ user })
+        }
+
+    })
 
 })
+//add user
 router.post('/', (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) res.json({ err })
@@ -30,40 +45,53 @@ router.post('/', (req, res) => {
     })
 
 })
-// router.post('/', function(req, res){
-//     if (error) {
-//         return res.status(400).send(error.details[0].message)
-//     }
-//     else{
-//         var name = req.body.name; 
-//         var email =req.body.email; 
-//         var pass = req.body.password; 
-//         var phone =req.body.phone; 
 
-//         var data = { 
-//             "name": name, 
-//             "email":email, 
-//             "password":pass, 
-//             "phone":phone 
-//         }
-//         User.create(userData, function (err, user) {
-//             if (err) {
-//               return next(err)
-//             } else {
-//               return res.status(400).send(error.details[0].message)
-//             }
-//           }); 
-//     }
-// })
+//add folowers
+router.get('/follow', function (req, res) {
+    Follow.create(req.body, function (err, user) {
+        if (err) res.json({ success: false, err })
+        else res.json({ success: true })
 
-router.patch('/', function (req, res) {
-    res.json({ "masd": "asda" })
+    })
+})
+
+//find folowers
+router.get('/:id/followers', function (req, res) {
+    Follow.find({ followed: ObjectId(req.params.id) }).populate("follower").exec(function (err, data) {
+        if (err) res.json({ success: false, err })
+        else res.json({ success: true, data })
+    })
+})
+
+//find following
+router.get('/:id/followings', function (req, res) {
+    Follow.find({ follower: ObjectId(req.params.id) }).populate("followed").exec(function (err, data) {
+        if (err) res.json({ success: false, err })
+        else res.json({ success: true, data })
+    })
 })
 
 
 
+router.patch('/:id', (req, res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, { new: true }, function (err, user) {
+        if (err) {
+            res.send({ success: false, err })
+        } else {
+            if (!user) {
+                res.send({ success: false, message: 'Not found' })
+            } else {
+                res.send(user)
+            }
+        }
 
-// Authenticate
+
+
+    })
+})
+
+
+
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username
     const password = req.body.password
@@ -76,12 +104,12 @@ router.post('/authenticate', (req, res, next) => {
             if (err) throw err;
             if (isMatch) {
                 user.password = undefined
-                const token = jwt.sign(JSON.stringify(user), config.secret, {
-                    // expiresIn: 604800 // 1 week
+                const token = jwt.sign(user.toJSON(), config.secret, {
+                    expiresIn: 604800 // 1 week
                 })
                 res.json({
                     success: true,
-                    token: 'JWT ' + token,
+                    token: 'jwt ' + token,
                     user
                 })
             } else {
@@ -90,26 +118,8 @@ router.post('/authenticate', (req, res, next) => {
         })
 
     })
+
 })
-
-
-
-
-
-
-
-router.post('/:id/items', function (req, res) {
-    req.body.user = ObjectId(req.params.id)
-
-    Item.create(req.body, function (err, items) {
-        if (err) {
-            return res.send(err)
-        } else {
-            return res.send(items)
-        }
-    });
-})
-
 
 router.patch('/:id/toggle', function (req, res) {
 
@@ -121,3 +131,4 @@ router.patch('/:id/toggle', function (req, res) {
         }
     });
 })
+

@@ -5,9 +5,10 @@ http.get = function(route, query, callback){
         query = ""
     }
 
-    fetch(route + query).then(res=>{
-        res.json().then(data => callback(data))
-    })
+    var headers = {"authorization" : localStorage.getItem("token")}
+    fetch(route + query, {headers}).then(res=>{
+        res.json().then(data => callback(null,data)).catch(err => callback(err,null))
+    }).catch(err => callback(err , null))
 }
 
 http.post = function(route, json, callback){

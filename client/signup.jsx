@@ -155,7 +155,7 @@ class Signup extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <Button onClick={this.submitForm.bind(this)}>Sign in</Button>
+        <Button onClick={this.submitForm.bind(this)}>Sign up</Button>
       </Form>
       </div>
     );

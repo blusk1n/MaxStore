@@ -6,7 +6,9 @@ const passport = require('passport');
 const config = require('../config/database')
 const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
-
+const Items = require('../model/item')
+const express = require('express')
+const app = express()
 
 
 
@@ -117,7 +119,7 @@ router.post('/authenticate', (req, res, next) => {
         }
     })
         
-    })
+    })})
 
   
   
@@ -132,3 +134,14 @@ router.patch('/:id/toggle', function (req, res) {
     });
 })
 
+
+// Get all user's items 
+
+router.get('/:id/items', (req, res) => {
+    // console.log(req.params.id)
+    // res.send(req.params.id)
+    Items.find({user: req.params.id}, (err, items) => {
+        if (err) res.send({message: err})
+        res.send(items)
+    })
+})

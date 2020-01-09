@@ -125,3 +125,24 @@ router.patch('/:id/toggle', function (req, res) {
         }
     });
 })
+
+
+// POST item 
+
+router.post('/:id', (req, res) => {
+    const user = req.params.id;
+    data = {
+        "user": user,
+        "description": req.body.description,
+        "photo": req.body.photo,
+        "price": req.body.price,
+        "quantity": req.body.quantity,
+        "name": req.body.name
+
+
+    }
+    Item.create(data, (err, created) => {
+        if (err) return res.json({err})
+        res.json({created})
+    })
+})

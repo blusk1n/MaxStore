@@ -9,7 +9,10 @@ const bcrypt = require('bcryptjs');
 
 
 router.get('/', function(req, res){
-    res.json({"masd":"asda"})
+    User.find({}, (err, data) => {
+        if (err) res.send({message: err.message})
+        res.send(data)
+    })
 })
 
 
@@ -121,3 +124,8 @@ router.post('/authenticate', (req, res, next) => {
         
     })
 })
+
+
+
+// Find all you item
+router.get('/:id/items')

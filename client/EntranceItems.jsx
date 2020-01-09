@@ -1,5 +1,5 @@
 import React from "react";
-import items from "./dummyItems.jsx";
+import http from "./http.jsx";
 import {
   Card,
   Button,
@@ -14,13 +14,29 @@ import {
 } from "reactstrap";
 
 class EntranceItems extends React.Component {
+
+  constructor(){
+    super()
+    this.state = {
+      products : []
+    }
+  }
+
+  componentDidMount(){
+    http.get("/api/items" , (err,products)=>{
+      if(err) console.log(err)
+      else{
+        this.setState({products})
+      }
+    })
+  }
+
   render() {
-    console.log(items);
     return (
       <Row className="m-4 p-4">
-        {items.map(one => {
+        {this.state.products.map(one => {
           return (
-            <Col sm="3">
+            <Col key={one._id} sm="3">
               <Card className="my-2">
                 <CardImg
                   top

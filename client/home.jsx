@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Profile from './Profile.jsx';
-import Feed from './Feed.jsx';
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import Profile from "./Profile.jsx";
+import Feed from "./Feed.jsx";
+import { BrowserRouter as Router, Link, Route, Switch, Redirect } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -33,11 +33,11 @@ const Home = props => {
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-        <Nav className="mr-auto" navbar>
+          <Nav className="mr-auto" navbar>
             {/* <NavItem>
               <NavLink tag={Link} to="signup">signup</NavLink>
             </NavItem> */}
-    
+
             <NavItem>
               <NavLink tag={Link} to="profile">
                 Profile
@@ -87,10 +87,21 @@ const Home = props => {
           </Nav>
         </div>
         <div style={{ flex: 5 }}>
-      <Route path="/profile" exact  component={()=> <Profile  />}/>
-      <Route path="/" exact component={()=> <Feed />}/>
-
+          <Switch>
+            <Route
+              path="/profile"
+              exact
+              component={() => <Profile user={props.user} />}
+            />
+            <Route exact path={props.user ? "/" + props.user.username : "/"}>
+              <Redirect to="/profile" />
+            </Route>
+            <Route path="/" exact component={() => <Feed />} />
+            
+            <Route path="/:username" exact component={Profile} />
+          </Switch>
         </div>
+        {/* <div style={{ flex: 2 }}></div> */}
       </div>
     </Router>
   );

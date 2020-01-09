@@ -1,7 +1,17 @@
 const router = module.exports = require('express').Router()
 const Item = require('../model/item.js')
+const Follow = require('../model/following.js')
 const Rate = require('../model/rate.js')
 const Review = require('../model/review.js')
+const passport = require("passport")
+
+
+router.get("/" , (req,res)=>{
+  Item.find({}).sort({_id : -1}).populate("user").exec((err, items)=>{
+    if (err) res.json({err})
+    else res.json(items)
+  })
+})
 
 router.patch('/:id', function (req, res) {
 
@@ -12,6 +22,30 @@ router.patch('/:id', function (req, res) {
             return res.send(items)
         }
     });
+})
+
+router.post('/', passport.authenticate("jwt" , {session:false}),  function (req, res) {
+
+  req.body.user = req.user._id
+
+  Item.create(req.body, function (err, item) {
+      if (err) res.json({err})
+      else res.json({item})
+      
+  });
+})
+
+router.get("/home" , passport.authenticate("jwt" , {session:false}) , (req,res)=>{
+Follow.find({follower : req.user._id}, (err, data)=>{
+  data = data.map(one =>{
+    return { user : one.followed}
+})
+  data.push({user : req.user._id})
+  Item.find({$or : data}).populate("user").sort({_id:-1}).exec((err, items)=>{
+    if (err) throw err
+    else res.json(items)
+  })
+})
 })
 
 router.post('/:id/reviews', function (req, res) {

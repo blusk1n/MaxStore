@@ -3,6 +3,7 @@ const User = require('../model/user.js')
 const Follow = require('../model/following.js')
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const Item     = require("../model/item.js")
 const config = require('../config/database')
 const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
@@ -16,19 +17,6 @@ router.get('/', function(req, res){
 
 
 
-router.get('/:id', function(req, res){
-    //fitch user fron Dbrgh
-   User.findById(req.params.id, function(err, user) {
-       if(err){
-         res.json({err})
-         throw err
-       }else{
-          res.json({user})
-       }
-
-   })
-    
-})
 //add user
 router.post('/', (req, res) => {
     bcrypt.hash(req.body.password , 10 , (err, hash)=>{
@@ -40,15 +28,19 @@ router.post('/', (req, res) => {
                 created.password = undefined
                 res.json({created})
             })
-
+            
         }
     })
     
 })
 
 //add folowers
-router.get('/follow', function(req, res) {
-    Follow.create(req.body, function(err, user) {
+router.get('/:id/follow', passport.authenticate("jwt" , {session:false}) ,function(req, res) {
+    var data = {
+        follower : req.user._id,
+        followed : req.params.id
+    }
+    Follow.create(data, function(err, user) {
         if (err) res.json({success: false, err})
         else res.json({success:true})
         
@@ -56,16 +48,16 @@ router.get('/follow', function(req, res) {
 })
 
 //find folowers
-router.get('/:id/followers', function(req, res) {
-    Follow.find({followed: ObjectId(req.params.id)}).populate("follower").exec(function(err, data) {
+router.get('/followers', passport.authenticate("jwt" , {session:false}), function(req, res) {
+    Follow.find({followed: ObjectId(req.user._id)}).populate("follower").exec(function(err, data) {
         if (err) res.json({success: false, err})
         else res.json({success:true, data})
     })
 })
 
 //find following
-router.get('/:id/followings', function(req, res) {
-    Follow.find({follower: ObjectId(req.params.id)}).populate("followed").exec(function(err, data) {
+router.get('/followings', passport.authenticate("jwt" , {session:false}), function(req, res) {
+    Follow.find({follower: ObjectId(req.user._id)}).populate("followed").exec(function(err, data) {
         if (err) res.json({success: false, err})
         else res.json({success:true, data})
     })
@@ -84,7 +76,7 @@ router.patch('/:id', (req, res) => {
                 res.send(user)
             }
         }
-       
+        
         
         
     })
@@ -100,10 +92,10 @@ router.post('/authenticate', (req, res, next) => {
         if(!user) {
             return res.json({success: false, msg: 'User not found'})
         }
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) throw err;
-        if (isMatch) {
-            user.password = undefined
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+                user.password = undefined
             const token = jwt.sign(user.toJSON(), config.secret, {
                 expiresIn: 604800 // 1 week
             })
@@ -116,6 +108,31 @@ router.post('/authenticate', (req, res, next) => {
             return res.json({success: false, msg: 'Wrong password'})
         }
     })
-        
+    
+})
+})
+
+router.get('/:id', function(req, res){
+    //fitch user fron Dbrgh
+   User.findById(req.params.id, function(err, user) {
+       if(err){
+         res.json({err})
+       }else{
+          res.json({user})
+       }
+
+   })
+    
+})
+
+router.get('/:username/items', function(req, res){
+    //fitch user fron Dbrgh
+User.findOne({username : req.params.username}, (err,user)=>{
+
+    Item.find({user : user._id}).sort({_id : -1}).exec((err,products)=>{
+        if (err) res.json({err})
+        else res.json({products,user})
     })
+})
+    
 })

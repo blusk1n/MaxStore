@@ -12,6 +12,10 @@ const Schema = mongoose.Schema({
     item: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'item'
+    },
+    deactivated: {
+        type: Boolean,
+        default: false
     }
 });
 

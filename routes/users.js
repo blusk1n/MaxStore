@@ -8,6 +8,8 @@ const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
 
 
+
+
 router.get('/', function(req, res){
     res.json({"masd":"asda"})
 })
@@ -27,8 +29,6 @@ router.get('/:id', function(req, res){
    })
     
 })
-
-
 //add user
 router.post('/', (req, res) => {
     bcrypt.hash(req.body.password , 10 , (err, hash)=>{
@@ -92,8 +92,6 @@ router.patch('/:id', (req, res) => {
 
 
 
-
-// Authenticate
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username
     const password = req.body.password
@@ -106,8 +104,8 @@ router.post('/authenticate', (req, res, next) => {
         if (err) throw err;
         if (isMatch) {
             user.password = undefined
-            const token = jwt.sign(JSON.stringify(user), config.secret, {
-                // expiresIn: 604800 // 1 week
+            const token = jwt.sign(user.toJSON(), config.secret, {
+                expiresIn: 604800 // 1 week
             })
             res.json({
                 success: true,
@@ -120,4 +118,17 @@ router.post('/authenticate', (req, res, next) => {
     })
         
     })
+
+  
+  
+router.patch('/:id/toggle', function (req, res) {
+
+    User.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
+        if (err) {
+            return res.send(err)
+        } else {
+            return res.send(items)
+        }
+    });
 })
+

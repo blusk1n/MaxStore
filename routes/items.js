@@ -73,7 +73,7 @@ router.get('/:id/reviews', function (req, res) {
 
 router.patch('/reviews/:id/toggle', function (req, res) {
 
-    Review.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
+    Review.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
         if (err) {
             return res.send(err)
         } else {
@@ -84,7 +84,40 @@ router.patch('/reviews/:id/toggle', function (req, res) {
 
 router.patch('/rates/:id/toggle', function (req, res) {
 
+    Rate.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
+        if (err) {
+            return res.send(err)
+        } else {
+            return res.send(items)
+        }
+    });
+})
+
+router.patch('/reviews/:id', function (req, res) {
+
+    Review.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
+        if (err) {
+            return res.send(err)
+        } else {
+            return res.send(items)
+        }
+    });
+})
+
+router.patch('/rates/:id', function (req, res) {
+
     Rate.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
+        if (err) {
+            return res.send(err)
+        } else {
+            return res.send(items)
+        }
+    });
+})
+
+router.patch('/:id/toggle', function (req, res) {
+
+    Item.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
         if (err) {
             return res.send(err)
         } else {

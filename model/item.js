@@ -6,7 +6,8 @@ const Schema = mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        maxlength : 250
     },
     photo: {
         type: String,

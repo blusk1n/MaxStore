@@ -4,13 +4,13 @@ import http from "./http.jsx";
 import Home from "./home.jsx";
 import Entrance from "./entrance.jsx";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-window.http = http;
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      token: true
+      token: true,
+      user : null
     };
   }
   componentDidMount(){
@@ -19,9 +19,9 @@ class App extends React.Component {
   rerender() {
       http.get("/api/token", (err,data) => {
         if (!err && data.success) {
-          this.setState({ token: true });
+          this.setState({ token: true, user:data.user });
         } else {
-          this.setState({ token: false });
+          this.setState({ token: false,user:null });
         }
       });
   }
@@ -29,20 +29,11 @@ class App extends React.Component {
     return (
       <div>
         {this.state.token ? (
-          <Home rerender={this.rerender.bind(this)} />
+          <Home user={this.state.user} rerender={this.rerender.bind(this)} />
         ) : (
           <Entrance rerender={this.rerender.bind(this)} />
         )}
-        {/* <Router>
-            <Link to="/home">
-                <li>Home</li>
-            </Link>
-            <Link to="/login">
-                <li>Entrance</li>
-            </Link>
-            {<Route path="/home" exact component={Home}/>
-            <Route path="/login" exact component={Entrance}/>}
-        </Router>     */}
+
       </div>
     );
   }

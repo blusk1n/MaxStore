@@ -15,7 +15,7 @@ http.post = function(route, json, callback){
     fetch(route, {
         method : "POST",
         body : JSON.stringify(json),
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json', "authorization" : localStorage.getItem("token")}
     }).then(res=>{
         res.json().then(data => callback(data))
     })
@@ -25,7 +25,7 @@ http.patch = function(route, json, callback){
     fetch(route, {
         method : "PATCH",
         body : JSON.stringify(json),
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json', "authorization" : localStorage.getItem("token")}
     }).then(res=>{
         res.json().then(data => callback(data))
     })

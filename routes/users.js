@@ -119,7 +119,7 @@ router.post('/authenticate', (req, res, next) => {
         
     })
 
-  
+})
   
 router.patch('/:id/toggle', function (req, res) {
 

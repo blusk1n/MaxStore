@@ -1,6 +1,5 @@
 import React from "react";
 import http from "./http.jsx";
-import item from "./item.jsx";
 import {
   Card,
   Button,
@@ -46,7 +45,7 @@ class EntranceItems extends React.Component {
                   alt="Card image cap"
                 />
                 <CardBody>
-                  <CardTitle onClick={item}>{one.name}</CardTitle>
+                  <CardTitle>{one.name}</CardTitle>
                   <CardSubtitle className="text-muted">Price : ${one.price}</CardSubtitle>
                   {/* <CardText>{one.description}</CardText> */}
                 </CardBody>

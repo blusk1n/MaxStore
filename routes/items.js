@@ -4,7 +4,7 @@ const Follow = require('../model/following.js')
 const Rate = require('../model/rate.js')
 const Review = require('../model/review.js')
 const passport = require("passport")
-
+const upload = require("../upload.js")
 
 router.get("/" , (req,res)=>{
   Item.find({}).sort({_id : -1}).populate("user").exec((err, items)=>{
@@ -24,9 +24,10 @@ router.patch('/:id', function (req, res) {
     });
 })
 
-router.post('/', passport.authenticate("jwt" , {session:false}),  function (req, res) {
-
-  req.body.user = req.user._id
+router.post('/', passport.authenticate("jwt" , {session:false}) , upload.single("photo"),  function (req, res) {
+    req.body.photo = req.file.filename
+    req.body.user = req.user._id
+    req.body.available = Boolean(req.body.available)
 
   Item.create(req.body, function (err, item) {
       if (err) res.json({err})

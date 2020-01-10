@@ -42,26 +42,37 @@ router.get('/:id/follow', passport.authenticate("jwt" , {session:false}) ,functi
         follower : req.user._id,
         followed : req.params.id
     }
-    Follow.create(data, function(err, user) {
-        if (err) res.json({success: false, err})
-        else res.json({success:true})
-        
+    Follow.findOne(data, (err,found)=>{
+        if(!found){
+
+            Follow.create(data, function(err, user) {
+                if (err) res.json({success: false, err})
+                else res.json({success:true})
+                
+            })
+        }else {
+            Follow.remove(data ,function(err, user) {
+                if (err) res.json({success: false, err})
+                else res.json({success:true})
+                
+            })
+        }
     })
 })
 
 //find folowers
-router.get('/followers', passport.authenticate("jwt" , {session:false}), function(req, res) {
-    Follow.find({followed: ObjectId(req.user._id)}).populate("follower").exec(function(err, data) {
+router.get('/:id/followers', passport.authenticate("jwt" , {session:false}), function(req, res) {
+    Follow.find({followed: ObjectId(req.params.id)}).populate("follower").exec(function(err, data) {
         if (err) res.json({success: false, err})
-        else res.json({success:true, data})
+        else res.json( data)
     })
 })
 
 //find following
-router.get('/followings', passport.authenticate("jwt" , {session:false}), function(req, res) {
-    Follow.find({follower: ObjectId(req.user._id)}).populate("followed").exec(function(err, data) {
+router.get('/:id/followings', passport.authenticate("jwt" , {session:false}), function(req, res) {
+    Follow.find({follower: ObjectId(req.params.id)}).populate("followed").exec(function(err, data) {
         if (err) res.json({success: false, err})
-        else res.json({success:true, data})
+        else res.json( data)
     })
 })
 
@@ -127,15 +138,26 @@ router.get('/:id', function(req, res){
     
 })
 
-router.get('/:username/items', function(req, res){
-User.findOne({username : req.params.username}, (err,user)=>{
+router.get('/:username/items', passport.authenticate("jwt" , {session:false}) , function(req, res){
+    if(req.user.username == req.params.username){
+        Item.find({user : req.user._id}).sort({_id : -1}).exec((err,products)=>{
+            if (err) res.json({err})
+            else res.json({products,user : req.user})
+        })
 
-    Item.find({user : user._id}).sort({_id : -1}).exec((err,products)=>{
-        if (err) res.json({err})
-        else res.json({products,user})
-    })
+    }else{
+        User.findOne({username : req.params.username}).lean().exec((err,user)=>{
+            Follow.exists({followed : user._id, follower : req.user._id}, (err,exist)=>{
+                user.followed = exist
+                user.password = undefined
+                Item.find({user : user._id}).sort({_id : -1}).exec((err,products)=>{
+                    if (err) res.json({err})
+                    else res.json({products,user})
+                })
+            })
+        })
 
-})
+    }
 })
 router.patch('/:id/toggle', function (req, res) {
 

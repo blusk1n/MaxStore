@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from "reactstrap";
+import { Link } from "react-router-dom";
 import http from "./http.jsx";
 class Signup extends React.Component {
 
@@ -18,7 +19,11 @@ class Signup extends React.Component {
         json[one.name] = one.value
       })
       http.post("/api/users", json, data =>{
-        console.log(data)
+        http.post("/api/users/authenticate", json, data => {
+            localStorage.setItem("token" , data.token);
+            this.props.rerender()
+          
+        });
       })
     }else {
       this.setState({alert : true})
@@ -155,7 +160,7 @@ class Signup extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <Button onClick={this.submitForm.bind(this)}>Sign up</Button>
+        <Button tag={Link} to="" onClick={this.submitForm.bind(this)}>Sign up</Button>
       </Form>
       </div>
     );

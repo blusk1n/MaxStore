@@ -1,5 +1,6 @@
 import React from "react";
 import http from "./http.jsx";
+import item from "./item.jsx";
 import {
   Card,
   Button,
@@ -15,18 +16,18 @@ import {
 
 class EntranceItems extends React.Component {
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
-      products : []
+      products: []
     }
   }
 
-  componentDidMount(){
-    http.get("/api/items" , (err,products)=>{
-      if(err) console.log(err)
-      else{
-        this.setState({products})
+  componentDidMount() {
+    http.get("/api/items", (err, products) => {
+      if (err) console.log(err)
+      else {
+        this.setState({ products })
       }
     })
   }
@@ -45,9 +46,9 @@ class EntranceItems extends React.Component {
                   alt="Card image cap"
                 />
                 <CardBody>
-                  <CardTitle>{one.name}</CardTitle>
+                  <CardTitle onClick={item}>{one.name}</CardTitle>
                   <CardSubtitle className="text-muted">Price : ${one.price}</CardSubtitle>
-                  <CardText>{one.description}</CardText>
+                  {/* <CardText>{one.description}</CardText> */}
                 </CardBody>
               </Card>
             </Col>

@@ -41,7 +41,7 @@ class EntranceItems extends React.Component {
                 <CardImg
                   top
                   width="100%"
-                  src={one.photo}
+                  src={"http://127.0.0.1:3000/api/uploads/" + one.photo}
                   alt="Card image cap"
                 />
                 <CardBody>

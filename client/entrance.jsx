@@ -43,7 +43,7 @@ const Entrance = (props) => {
 
             <Route path="/" exact component={EntranceItems}/>
             <Route path="/login" exact  component={()=> <Login rerender={props.rerender} />}/>
-            <Route path="/signup" exact component={Signup}/>
+            <Route path="/signup" exact component={()=> <Signup rerender={props.rerender} />}/>
     </Router>
   );
 }

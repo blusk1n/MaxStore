@@ -15,18 +15,18 @@ import {
 
 class EntranceItems extends React.Component {
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
-      products : []
+      products: []
     }
   }
 
-  componentDidMount(){
-    http.get("/api/items" , (err,products)=>{
-      if(err) console.log(err)
-      else{
-        this.setState({products})
+  componentDidMount() {
+    http.get("/api/items", (err, products) => {
+      if (err) console.log(err)
+      else {
+        this.setState({ products })
       }
     })
   }
@@ -47,7 +47,7 @@ class EntranceItems extends React.Component {
                 <CardBody>
                   <CardTitle>{one.name}</CardTitle>
                   <CardSubtitle className="text-muted">Price : ${one.price}</CardSubtitle>
-                  <CardText>{one.description}</CardText>
+                  {/* <CardText>{one.description}</CardText> */}
                 </CardBody>
               </Card>
             </Col>

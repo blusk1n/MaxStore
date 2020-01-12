@@ -4,41 +4,41 @@ import { Link } from "react-router-dom";
 import http from "./http.jsx";
 class Signup extends React.Component {
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
-      alert : false
+      alert: false
     }
   }
 
-  submitForm(){
+  submitForm() {
     var form = document.getElementById("signupForm")
-    if(form.checkValidity()){
+    if (form.checkValidity()) {
       var json = {};
       [].slice.call(form.elements).forEach(one => {
         json[one.name] = one.value
       })
-      http.post("/api/users", json, data =>{
+      http.post("/api/users", json, data => {
         http.post("/api/users/authenticate", json, data => {
-            localStorage.setItem("token" , data.token);
-            this.props.rerender()
-          
+          localStorage.setItem("token", data.token);
+          this.props.rerender()
+
         });
       })
-    }else {
-      this.setState({alert : true})
-      setTimeout(()=>{
-        this.setState({alert : false})
-      } , 3000)
+    } else {
+      this.setState({ alert: true })
+      setTimeout(() => {
+        this.setState({ alert: false })
+      }, 3000)
     }
   }
 
   render() {
     return (<div>
 
-      {this.state.alert?<Alert color="danger">
-      Please fill all fields
-    </Alert>: null}
+      {this.state.alert ? <Alert color="danger">
+        Please fill all fields
+    </Alert> : null}
       <Form id="signupForm" className="m-4 p-4">
         <Row form>
           <Col md={4}>
@@ -132,26 +132,26 @@ class Signup extends React.Component {
             </FormGroup>
           </Col>
           <Col md={4}>
-          <FormGroup>
-        <Label for="gender">Gender</Label>
-        <Input type="select" defaultValue="None" name="gender" id="gender">
-          <option>Male</option>
-          <option>Female</option>
-          <option >None</option>
-        </Input>
-      </FormGroup>
+            <FormGroup>
+              <Label for="gender">Gender</Label>
+              <Input type="select" defaultValue="None" name="gender" id="gender">
+                <option>Male</option>
+                <option>Female</option>
+                <option >None</option>
+              </Input>
+            </FormGroup>
           </Col>
           <Col md={4}>
-          <FormGroup>
-        <Label for="birthdate">Birth date</Label>
-        <Input
-          type="date"
-          name="birthdate"
-          id="birthdate"
-          placeholder="date placeholder"
-          required
-        />
-      </FormGroup>
+            <FormGroup>
+              <Label for="birthdate">Birth date</Label>
+              <Input
+                type="date"
+                name="birthdate"
+                id="birthdate"
+                placeholder="date placeholder"
+                required
+              />
+            </FormGroup>
           </Col>
           <Col md={12}>
             <FormGroup>
@@ -160,9 +160,14 @@ class Signup extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <Button tag={Link} to="" onClick={this.submitForm.bind(this)}>Sign up</Button>
+        <Button className="btn-block" tag={Link} to="" onClick={this.submitForm.bind(this)}>
+          <p style={{
+            fontSize: 20,
+            margin: 5
+          }}>Sign up
+            </p></Button>
       </Form>
-      </div>
+    </div>
     );
   }
 }

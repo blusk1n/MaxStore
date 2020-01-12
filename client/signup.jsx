@@ -160,7 +160,7 @@ class Signup extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <Button tag={Link} to="" onClick={this.submitForm.bind(this)}>
+        <Button className="btn-block" tag={Link} to="" onClick={this.submitForm.bind(this)}>
           <p style={{
             fontSize: 20,
             margin: 5

@@ -29,12 +29,12 @@ class Login extends React.Component {
       });
       http.post("/api/users/authenticate", json, data => {
         if (data.success) {
-          localStorage.setItem("token" , data.token);
+          localStorage.setItem("token", data.token);
           this.props.rerender()
         } else {
-          this.setState({ msg: data.msg, alert : true });
+          this.setState({ msg: data.msg, alert: true });
           setTimeout(() => {
-            this.setState({ alert: false, msg : null });
+            this.setState({ alert: false, msg: null });
           }, 3000);
         }
       });
@@ -50,7 +50,7 @@ class Login extends React.Component {
     return (
       <div>
         {this.state.alert ? (
-          <Alert color="danger">{this.state.msg?this.state.msg:"Please fill all fields"}</Alert>
+          <Alert color="danger">{this.state.msg ? this.state.msg : "Please fill all fields"}</Alert>
         ) : null}
         <Form id="loginForm" className="m-4 p-4">
           <Row form>
@@ -81,7 +81,12 @@ class Login extends React.Component {
             </Col>
           </Row>
           <Button tag={Link} to="" className="btn-block" onClick={this.submitForm.bind(this)}>
-            Log in
+            <p style={{
+              fontSize: 20,
+              margin: 5
+            }}>
+              Log in
+            </p>
           </Button>
         </Form>
       </div>

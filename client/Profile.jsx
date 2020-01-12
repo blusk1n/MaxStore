@@ -72,10 +72,11 @@ class Profile extends React.Component {
           style={{
             display: "flex",
             flexDirection: "row",
-            marginBottom: "20px"
+            margin: "20px 0",
+            maxHeight : "85vh"
           }}
         >
-          <div style={{ flex: 2 }}>
+          <div style={{ flex: 2,fontSize : "13pt" }}>
             <form className="image-upload" id="imageUpload">
               <label for="file-input">
                 {/* <div className={this.state.profile?"container imageHoverable" : "container"}> */}
@@ -129,6 +130,7 @@ class Profile extends React.Component {
               <span
                 style={{ cursor: "pointer" }}
                 onClick={this.toggleModel.bind(this, "Followers")}
+                className="clickable"
               >
                 Followers
               </span>
@@ -136,19 +138,20 @@ class Profile extends React.Component {
               <span
                 style={{ cursor: "pointer" }}
                 onClick={this.toggleModel.bind(this, "Followings")}
+                className="clickable"
               >
                 Followings
               </span>
             </p>
             </div>
           </div>
-          <div style={{ flex: 5, marginLeft: "7px" }}>
-        <h3>Products: </h3>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div style={{ flex: 6 }} className="m-4 p-4">
+          <div style={{ flex: 7, marginLeft: "15px",}}>
+        <h3 className="text-muted">Products</h3>
+        <div style={{ display: "flex", flexDirection: "row", maxHeight: "75vh", overflowY : "scroll" }}>
+          <div style={{ flex: 5 }} >
             <Posts items={this.state.products} />
           </div>
-          <div style={{ flex: 0 }}></div>
+          <div style={{ flex: 1 }}></div>
         </div>
             
           </div>

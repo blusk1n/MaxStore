@@ -59,7 +59,7 @@ return (
     </NavItem> */}
 
     <NavItem>
-      <NavLink tag={Link} to="profile">
+      <NavLink tag={Link} to="/profile">
         Profile
       </NavLink>
     </NavItem>

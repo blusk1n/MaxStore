@@ -9,8 +9,7 @@ const ObjectId = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs');
 const Items = require('../model/item')
 const express = require('express')
-const app = express()
-
+const upload = require("../upload.js")
 
 
 router.get('/', function (req, res) {
@@ -35,6 +34,13 @@ router.post('/', (req, res) => {
     })
 
 })
+
+router.post("/:id/uploadImage" , passport.authenticate("jwt" , {session:false}) , upload.single("photo"), (req,res)=>{
+    User.findByIdAndUpdate(req.user._id , {$set : {photo : req.file.filename }} , (err, updated)=>{
+
+        res.json({success : true})
+    })
+} )
 
 //add folowers
 router.get('/:id/follow', passport.authenticate("jwt", { session: false }), function (req, res) {

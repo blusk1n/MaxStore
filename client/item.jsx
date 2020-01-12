@@ -44,13 +44,15 @@ class Item extends React.Component {
       >
         <div style={{ flex: 4 }}>
           <img
-            width="100%"
+            width="300px"
+            height= "300px"
+            style={{objectFit : "contain"}}
             src={"http://127.0.0.1:3000/api/uploads/" + this.state.item.photo}
             alt="Card image cap"
           />
         </div>
         <div style={{ flex: 6, marginLeft: "7px" }}>
-          <CardTitle tag={Link} to={"items/" + this.state.item._id } className="mb-1">{this.state.item.name}</CardTitle>
+          <CardTitle className="mb-1">{this.state.item.name}</CardTitle>
           <br/>
           <small className="text-muted">
           <CardText tag={Link} to={"/users/" + this.state.item.user.username}>{this.state.item.user.firstname} {this.state.item.user.lastname}</CardText>

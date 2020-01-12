@@ -35,7 +35,7 @@ class SearchArea extends React.Component {
                           width="100%"
                           src={
                             one.photo
-                              ? `http://127.0.0.1:3000/api/uploads/${one.photo}`
+                              ? `/api/uploads/${one.photo}`
                               : "http://maidanapp.net/wp-content/themes/maidan/images/no_image.png"
                           }
                           alt="Card image cap"

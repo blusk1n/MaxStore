@@ -47,7 +47,7 @@ class Item extends React.Component {
             width="300px"
             height= "300px"
             style={{objectFit : "contain"}}
-            src={"http://127.0.0.1:3000/api/uploads/" + this.state.item.photo}
+            src={"/api/uploads/" + this.state.item.photo}
             alt="Card image cap"
           />
         </div>

@@ -85,7 +85,7 @@ class Profile extends React.Component {
                   style={{aspectRatio:1, objectFit : "contain"}}
                   src={
                     this.state.user.photo
-                      ? `http://127.0.0.1:3000/api/uploads/${this.state.user.photo}`
+                      ? `/api/uploads/${this.state.user.photo}`
                       : "http://maidanapp.net/wp-content/themes/maidan/images/no_image.png"
                   }
                   alt="Card image cap"

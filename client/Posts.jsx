@@ -30,7 +30,7 @@ var Posts = (props)=> (
             width="150px"
             height="150px"
             style={{objectFit: "contain"}}
-            src={"http://127.0.0.1:3000/api/uploads/" + one.photo}
+            src={"/api/uploads/" + one.photo}
             alt="Card image cap"
           />
         </div>

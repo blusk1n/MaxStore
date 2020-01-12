@@ -18,6 +18,10 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
+    this.handleState()
+  }
+
+  handleState(){
     if (this.props.user) {
       http.get(
         `/api/users/${this.props.user.username}/items`,
@@ -36,6 +40,7 @@ class Profile extends React.Component {
       }
     }
   }
+
   follow() {
     http.get(`/api/users/${this.state.user._id}/follow`, (err, data) => {
       this.componentDidMount();
@@ -48,6 +53,10 @@ class Profile extends React.Component {
       });
 
     }else this.setState({ modal: !this.state.modal, modalFor: title, modalUsers : []});
+  }
+  componentWillReceiveProps(){
+    setTimeout(()=>this.handleState(), 0)
+    
   }
   render() {
     return (
@@ -113,7 +122,7 @@ class Profile extends React.Component {
           <ModalBody>
             {this.state.modalUsers.map(one =>{
               var element = one[this.state.modalFor == "Followers"? "follower" : "followed"]
-              return <Link to={element.username} key={element._id}>{element.firstname + " " + element.lastname}</Link>
+              return <div key={element._id}><hr /><Link onClick={this.toggleModel.bind(this, null)} to={"/users/" + element.username} >{element.firstname + " " + element.lastname}</Link></div>
             })}
           </ModalBody>
           <ModalFooter>

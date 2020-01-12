@@ -181,3 +181,10 @@ router.post('/:id', (req, res) => {
         res.json({created})
     })
 })
+
+router.get("/:id" , (req,res)=>{
+    Item.findById(req.params.id).populate("user").exec((err, item)=>{
+      if (err) res.json({err})
+      else res.json(item)
+    })
+  })

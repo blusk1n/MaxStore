@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import Profile from "./Profile.jsx";
+import NavBar from "./NavBar.jsx";
+import Item from "./item.jsx";
+import http from "./http.jsx";
+import SearchArea from "./searchArea.jsx";
+import  {debounce} from "lodash"; 
 import Feed from "./Feed.jsx";
 import {
   BrowserRouter as Router,
+  withRouter,
   Link,
   Route,
   Switch,
@@ -29,87 +35,83 @@ import {
   Col,
   Row
 } from "reactstrap";
+import item from "./item.jsx";
 
 const Home = props => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchProducts, setSearchProducts] = useState(null)
+  const [searchUsers, setSearchUsers] = useState(null)
 
   const toggle = () => setIsOpen(!isOpen);
   const { buttonLabel, className } = props;
 
   const [modal, setModal] = useState(false);
+  const [searchArea , setSearchArea] = useState("")
 
   const toggleModel = () => setModal(!modal);
-  function logOut() {
-    localStorage.removeItem("token");
-    props.rerender();
-  }
+  const keyup = debounce((usedFor)=>{
+    var input = document.getElementById("barInput").value
+
+    if(input != ""){
+      http.get("/api/search" , `?keyword=${input}&usedfor=${usedFor}`, (err,data)=>{
+          setSearchUsers(data.users)
+          setSearchProducts(data.products)
+          setSearchArea("/search")
+          setSearchArea("")    
+      })
+
+      http
+    }else {
+      setSearchArea("/")
+      setSearchArea("")
+
+    }
+} , 500)
+
   return (
     <Router>
-      <Navbar fixed={"top"} color="light" light expand="md">
-        <NavbarBrand tag={Link} to="">
-          Max
-        </NavbarBrand>
-        <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            {/* <NavItem>
-              <NavLink tag={Link} to="signup">signup</NavLink>
-            </NavItem> */}
-
-            <NavItem>
-              <NavLink tag={Link} to="profile">
-                Profile
-              </NavLink>
-            </NavItem>
-          </Nav>
-          <Nav className="rightNav ml-auto" navbar>
-            {/* <NavItem>
-              <NavLink tag={Link} to="signup">signup</NavLink>
-            </NavItem> */}
-            <NavItem>
-              <NavLink tag={Link} to="" onClick={logOut}>
-                Logout
-              </NavLink>
-            </NavItem>
-          </Nav>
-          {/* <NavbarText>Simple Text</NavbarText> */}
-        </Collapse>
-      </Navbar>
+      <NavBar rerender={props.rerender} keyup={keyup} />
       <div style={{ display: "flex", marginTop: "60px" }}>
         <div style={{ flex: 1 }}>
           {/* <p>List Based</p> */}
           <Nav vertical>
             <NavItem>
-              <NavLink style={{cursor : "pointer"}} onClick={toggleModel}>Add New Product</NavLink>
+              <NavLink style={{ cursor: "pointer" }} onClick={toggleModel}>
+                Add New Product
+              </NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="#">Link</NavLink>
-            </NavItem>
-            <NavItem>
+            </NavItem> */}
+            {/* <NavItem>
               <NavLink href="#">Another Link</NavLink>
-            </NavItem>
-            <NavItem>
+            </NavItem> */}
+            {/* <NavItem>
               <NavLink disabled href="#">
                 Disabled Link
               </NavLink>
-            </NavItem>
+            </NavItem> */}
           </Nav>
         </div>
         <div style={{ flex: 4 }}>
           <Switch>
+            { searchArea?<Redirect to={searchArea} /> : null}
             <Route path="/" exact component={() => <Feed />} />
             <Route
               path="/profile"
               exact
               component={() => <Profile user={props.user} />}
             />
-            <Route exact path={props.user ? "/" + props.user.username : "/"}>
+            
+            <Route
+              exact
+              path={props.user ? "/users/" + props.user.username : "/"}
+            >
               <Redirect to="/profile" />
             </Route>
-
-            <Route exact path="/users/:username"  component={Profile} />
-            <Route exact path="/items/:itemId"  component={Profile} />
-
+            <Route exact path="/search" component={()=> <SearchArea searchUsers={searchUsers} searchProducts={searchProducts} input={document.getElementById("barInput")} />} />
+            <Route exact path="/users/:username" component={Profile} />
+            <Route exact path="/items/:itemId" component={Item} />
           </Switch>
         </div>
         {/* <div style={{ flex: 2 }}></div> */}
@@ -162,11 +164,7 @@ const Home = props => {
                   <FormGroup className="align-middle">
                     <p className="align-middle">available</p>
                     <Label for="available" className="switch">
-                      <Input
-                        type="checkbox"
-                        name="available"
-                        id="available"
-                      />
+                      <Input type="checkbox" name="available" id="available" />
                       <span className="slider round"></span>
                     </Label>
                   </FormGroup>
@@ -185,9 +183,9 @@ const Home = props => {
     </FormGroup> */}
 
               <FormGroup>
-      <Label for="photo">Add Picture</Label>
-      <Input type="file" name="photo" id="photo" />
-    </FormGroup>
+                <Label for="photo">Add Picture</Label>
+                <Input type="file" name="photo" id="photo" />
+              </FormGroup>
             </Form>
           </ModalBody>
           <ModalFooter>
@@ -195,21 +193,21 @@ const Home = props => {
               color="primary"
               onClick={() => {
                 toggleModel();
-                var available = document.getElementById("addProductForm").elements.available
-                available.value = available.checked
+                var available = document.getElementById("addProductForm")
+                  .elements.available;
+                available.value = available.checked;
                 // console.log([].slice.call(document.getElementById("addProductForm").elements).map(one =>{
                 //   return {[one.name] : one.value}
                 // }))
-                console.log(document.getElementById("photo").files[0])
-              //   fetch("/api/items", {
-              //     method : "POST",
-              //     body : new FormData(document.getElementById("addProductForm")),
-              //     headers: {"authorization" : localStorage.getItem("token")}
-              // })
-                
+                // console.log(document.getElementById("photo").files[0])
+                fetch("/api/items", {
+                  method: "POST",
+                  body: new FormData(document.getElementById("addProductForm")),
+                  headers: { authorization: localStorage.getItem("token") }
+                });
               }}
             >
-            Submit
+              Submit
             </Button>{" "}
             <Button color="secondary" onClick={toggleModel}>
               Cancel
@@ -223,5 +221,3 @@ const Home = props => {
 
 export default Home;
 //
-
-

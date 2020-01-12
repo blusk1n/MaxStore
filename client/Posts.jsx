@@ -17,7 +17,7 @@ var Posts = (props)=> (
     {props.items?props.items.map(one => (
     <div key={one._id}>
       {/* <CardText tag={Link} to={"/" + one.user.username}>{one.user.firstname} {one.user.lastname}</CardText> */}
-      <Card tag={Link} to={"items/" + one._id }
+      <Card
         key={one._id}
         style={{
           display: "flex",
@@ -33,7 +33,8 @@ var Posts = (props)=> (
           />
         </div>
         <div style={{ flex: 6, marginLeft: "7px" }}>
-          <CardTitle className="mb-1">{one.name}</CardTitle>
+          <CardTitle tag={Link} to={"items/" + one._id } className="mb-1">{one.name}</CardTitle>
+          <br/>
           <small className="text-muted">
           <CardText tag={Link} to={"/users/" + one.user.username}>{one.user.firstname} {one.user.lastname}</CardText>
           </small>

@@ -31,10 +31,10 @@ const Entrance = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="rightNav ml-auto" navbar>
             <NavItem>
-              <NavLink tag={Link} to="signup">signup</NavLink>
+              <NavLink tag={Link} to="/signup">signup</NavLink>
             </NavItem>
             <NavItem>
-            <NavLink tag={Link} to="login">login</NavLink>
+            <NavLink tag={Link} to="/login">login</NavLink>
             </NavItem>
           </Nav>
           {/* <NavbarText>Simple Text</NavbarText> */}

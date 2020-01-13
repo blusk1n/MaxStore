@@ -30,7 +30,8 @@ class Login extends React.Component {
       http.post("/api/users/authenticate", json, data => {
         if (data.success) {
           localStorage.setItem("token" , data.token);
-          this.props.rerender()
+          this.props.rerender();
+          this.props.prop.history.push("/")
         } else {
           this.setState({ msg: data.msg, alert : true });
           setTimeout(() => {
@@ -80,7 +81,7 @@ class Login extends React.Component {
               </FormGroup>
             </Col>
           </Row>
-          <Button tag={Link} to="" className="btn-block" onClick={this.submitForm.bind(this)}>
+          <Button  className="btn-block" onClick={this.submitForm.bind(this)}>
             Log in
           </Button>
         </Form>

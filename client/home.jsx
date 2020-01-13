@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Profile from "./Profile.jsx";
 import NavBar from "./NavBar.jsx";
 import Item from "./item.jsx";
+import Categories from "./Categories.jsx";
+import Category from "./Category.jsx";
 import http from "./http.jsx";
 import SearchArea from "./searchArea.jsx";
-import  {debounce} from "lodash"; 
+import { debounce } from "lodash";
 import Feed from "./Feed.jsx";
 import {
   BrowserRouter as Router,
@@ -39,34 +41,38 @@ import item from "./item.jsx";
 
 const Home = props => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchProducts, setSearchProducts] = useState(null)
-  const [searchUsers, setSearchUsers] = useState(null)
+  const [searchProducts, setSearchProducts] = useState(null);
+  const [searchUsers, setSearchUsers] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   const toggle = () => setIsOpen(!isOpen);
   const { buttonLabel, className } = props;
 
   const [modal, setModal] = useState(false);
-  const [searchArea , setSearchArea] = useState("")
+  const [searchArea, setSearchArea] = useState("");
 
   const toggleModel = () => setModal(!modal);
-  const keyup = debounce((usedFor)=>{
-    var input = document.getElementById("barInput").value
+  const keyup = debounce(usedFor => {
+    var input = document.getElementById("barInput").value;
 
-    if(input != ""){
-      http.get("/api/search" , `?keyword=${input}&usedfor=${usedFor}`, (err,data)=>{
-          setSearchUsers(data.users)
-          setSearchProducts(data.products)
-          setSearchArea("/search")
-          setSearchArea("")    
-      })
+    if (input != "") {
+      http.get(
+        "/api/search",
+        `?keyword=${input}&usedfor=${usedFor}`,
+        (err, data) => {
+          setSearchUsers(data.users);
+          setSearchProducts(data.products);
+          setSearchArea("/search");
+          setSearchArea("");
+        }
+      );
 
-      http
-    }else {
-      setSearchArea("/")
-      setSearchArea("")
-
+      http;
+    } else {
+      setSearchArea("/");
+      setSearchArea("");
     }
-} , 500)
+  }, 500);
 
   return (
     <Router>
@@ -76,8 +82,22 @@ const Home = props => {
           {/* <p>List Based</p> */}
           <Nav vertical>
             <NavItem>
-              <NavLink style={{ cursor: "pointer" }} onClick={toggleModel}>
+              <NavLink style={{ cursor: "pointer" }} onClick={()=>{
+                http.get("/api/categories", (err, categories) => {
+                  setCategories(categories);
+                  toggleModel()
+                });
+                }}>
                 Add New Product
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                tag={Link}
+                to="/categories"
+                style={{ cursor: "pointer" }}
+              >
+                Categories
               </NavLink>
             </NavItem>
             {/* <NavItem>
@@ -95,21 +115,33 @@ const Home = props => {
         </div>
         <div style={{ flex: 4 }}>
           <Switch>
-            { searchArea?<Redirect to={searchArea} /> : null}
+            {searchArea ? <Redirect to={searchArea} /> : null}
             <Route path="/" exact component={() => <Feed />} />
             <Route
               path="/profile"
               exact
               component={() => <Profile user={props.user} />}
             />
-            
+
             <Route
               exact
               path={props.user ? "/users/" + props.user.username : "/"}
             >
               <Redirect to="/profile" />
             </Route>
-            <Route exact path="/search" component={()=> <SearchArea searchUsers={searchUsers} searchProducts={searchProducts} input={document.getElementById("barInput")} />} />
+            <Route
+              exact
+              path="/search"
+              component={() => (
+                <SearchArea
+                  searchUsers={searchUsers}
+                  searchProducts={searchProducts}
+                  input={document.getElementById("barInput")}
+                />
+              )}
+            />
+            <Route exact path="/categories" component={Categories} />
+            <Route exact path="/categories/:name" component={Category} />
             <Route exact path="/users/:username" component={Profile} />
             <Route exact path="/items/:itemId" component={Item} />
           </Switch>
@@ -171,21 +203,25 @@ const Home = props => {
                 </Col>
               </Row>
 
-              {/* <FormGroup>
-      <Label for="category">Categoy</Label>
-      <Input type="select" name="category" id="category">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </Input>
-    </FormGroup> */}
+              <Row form>
+                <Col md={4}>
+                  <FormGroup>
+                    <Label for="category">Categoy</Label>
+                    <Input type="select" name="category" id="category">
+                      {categories.map(one => {
+                        return <option key={one._id} value={one._id}>{one.name}</option>;
+                      })}
+                    </Input>
+                  </FormGroup>
+                </Col>
 
-              <FormGroup>
-                <Label for="photo">Add Picture</Label>
-                <Input type="file" name="photo" id="photo" />
-              </FormGroup>
+                <Col className="pl-4 pb-4" md={8}>
+                  <FormGroup>
+                    <Label for="photo">Add Picture</Label>
+                    <Input type="file" name="photo" id="photo" />
+                  </FormGroup>
+                </Col>
+              </Row>
             </Form>
           </ModalBody>
           <ModalFooter>

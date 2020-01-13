@@ -21,6 +21,7 @@ import {
 const Entrance = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
+
   const toggle = () => setIsOpen(!isOpen);
   return (
     <Router>
@@ -42,7 +43,7 @@ const Entrance = (props) => {
             <div className="my-4 py-4"></div>
 
             <Route path="/" exact component={EntranceItems}/>
-            <Route path="/login" exact  component={()=> <Login rerender={props.rerender} />}/>
+            <Route path="/login" exact  component={(prop)=> <Login prop={prop} rerender={props.rerender} />}/>
             <Route path="/signup" exact component={()=> <Signup rerender={props.rerender} />}/>
     </Router>
   );

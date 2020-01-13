@@ -40,9 +40,13 @@ var Posts = (props)=> (
           <small className="text-muted">
           <CardText tag={Link} to={"/users/" + one.user.username}>{one.user.firstname} {one.user.lastname}</CardText>
           </small>
+          <br/>
+          <small className="text-muted">
+          <CardText tag={Link} to={"/categories/" + one.category.name}>{one.category.name}</CardText>
+          </small>
           <CardText>Description: {one.description}</CardText>
           <small className="text-muted">
-            <span>Price: ${one.price}</span> &nbsp;&nbsp; <span>Availability: {one.available?"✔":"❌" }</span> &nbsp;&nbsp; <span>Quantity: {one.quantity}</span>
+            <span>Price: {one.price == 0? "Free" : "$"+one.price}</span> &nbsp;&nbsp; <span>Availability: {one.available?"✔":"❌" }</span> &nbsp;&nbsp; <span>Quantity: {one.quantity}</span>
           </small>
         </div>
       </Card>

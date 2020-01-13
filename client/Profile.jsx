@@ -149,7 +149,7 @@ class Profile extends React.Component {
         <h3 className="text-muted">Products</h3>
         <div style={{ display: "flex", flexDirection: "row", maxHeight: "75vh", overflowY : "scroll" }}>
           <div style={{ flex: 5 }} >
-            <Posts items={this.state.products} />
+            {this.state.products.length == 0? <h5>No products yet 😢</h5> :<Posts items={this.state.products} />}
           </div>
           <div style={{ flex: 1 }}></div>
         </div>

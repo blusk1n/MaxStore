@@ -6,6 +6,7 @@ const express           = require("express"),
       User              = require("./model/user.js"),
       Item              = require("./model/item.js"),
       items             = require('./routes/items.js'),
+      Category          = require("./model/category.js"),
       passport          = require('passport'),
       path              = require("path"),
       upload            = require("./upload.js"),
@@ -28,6 +29,26 @@ app.use('/api/items', items)
 app.get('/api/uploads/:name'  , (req,res)=>{
     res.sendFile(path.resolve("uploads" , req.params.name))
 })
+
+app.get("/api/categories/:name/items", (req,res)=>{
+    Category.findOne({name : req.params.name}, (err, cat)=>{
+        Item.find({category: cat._id}).populate("user").exec((err,products)=>{
+            if(err) res.json({success : false , err})
+            else res.json(products)
+        })
+
+    })
+})
+
+app.get("/api/categories", (req,res)=>{
+    Category.find({} , (err,categories)=>{
+        if(err) res.json({success : false , err})
+        else res.json(categories)
+    })
+})
+// Category.create({name : "Art"})
+// Category.create({name : "Else"})
+
 app.get("/api/search" , (req,res) => {
     var regex = {$regex : req.query.keyword, $options : "i"}
     if(req.query.usedfor == "People"){

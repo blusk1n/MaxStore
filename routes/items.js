@@ -7,7 +7,7 @@ const passport = require("passport")
 const upload = require("../upload.js")
 
 router.get("/" , (req,res)=>{
-  Item.find({}).sort({_id : -1}).populate("user").exec((err, items)=>{
+  Item.find({}).sort({_id : -1}).populate(["user"]).exec((err, items)=>{
     if (err) res.json({err})
     else res.json(items)
   })
@@ -42,7 +42,7 @@ Follow.find({follower : req.user._id}, (err, data)=>{
     return { user : one.followed}
 })
   data.push({user : req.user._id})
-  Item.find({$or : data}).populate("user").sort({_id:-1}).exec((err, items)=>{
+  Item.find({$or : data}).populate(["user" , "category"]).sort({_id:-1}).exec((err, items)=>{
     if (err) throw err
     else res.json(items)
   })

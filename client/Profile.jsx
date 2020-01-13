@@ -73,16 +73,16 @@ class Profile extends React.Component {
             display: "flex",
             flexDirection: "row",
             margin: "20px 0",
-            maxHeight : "85vh"
+            maxHeight: "85vh"
           }}
         >
-          <div style={{ flex: 2,fontSize : "13pt" }}>
+          <div style={{ flex: 2, fontSize: "13pt" }}>
             <form className="image-upload" id="imageUpload">
               <label for="file-input">
                 {/* <div className={this.state.profile?"container imageHoverable" : "container"}> */}
                 <img
                   width="100%"
-                  style={{aspectRatio:1, objectFit : "contain"}}
+                  style={{ aspectRatio: 1, objectFit: "contain" }}
                   src={
                     this.state.user.photo
                       ? `/api/uploads/${this.state.user.photo}`
@@ -90,70 +90,93 @@ class Profile extends React.Component {
                   }
                   alt="Card image cap"
                 />
-                  {/* {this.state.profile?<div style={{fontSize: "10em",marginTop : "-14px", opacity: 0}} className="centered">+</div>: null} */}
+                {/* {this.state.profile?<div style={{fontSize: "10em",marginTop : "-14px", opacity: 0}} className="centered">+</div>: null} */}
                 {/* </div> */}
               </label>
 
-             { this.state.profile? <input
-                id="file-input"
-                type="file"
-                name="photo"
-                onChange={() => {
-                  fetch(`/api/users/${this.state.user._id}/uploadImage`, {
-                    method: "POST",
-                    body: new FormData(document.getElementById("imageUpload")),
-                    headers: { authorization: localStorage.getItem("token") }
-                  }).then(data => {
-                    this.setState({})
-                  });
-                }}
-              />: null}
+              {this.state.profile ? (
+                <input
+                  id="file-input"
+                  type="file"
+                  name="photo"
+                  onChange={() => {
+                    fetch(`/api/users/${this.state.user._id}/uploadImage`, {
+                      method: "POST",
+                      body: new FormData(
+                        document.getElementById("imageUpload")
+                      ),
+                      headers: { authorization: localStorage.getItem("token") }
+                    }).then(data => {
+                      this.props.rerender();
+                    });
+                  }}
+                />
+              ) : null}
             </form>
-            <div>
-            <p>
-              <b> Name:</b> {this.state.user.firstname}{" "}
-              {this.state.user.lastname}
-            </p>
-            <p>
-              <b>Bio:</b> {this.state.user.bio}
-            </p>
-            <p>
-              <b>Address:</b> {this.state.user.address}
-            </p>
+            <div style={{textAlign : "center", fontSize : "11pt"}}>
+              <div>
+                <p>
+                 {this.state.user.firstname}{" "}
+                  {this.state.user.lastname}
+                </p>
+                <p>
+                  <b>Bio:</b> {this.state.user.bio}
+                </p>
+                <p>
+                  <b>Address:</b> {this.state.user.address}
+                </p>
+                <p>
+                  <b>phone:</b> {this.state.user.phone}
+                </p>
+              </div>
 
-            {this.state.profile ? null : (
-              <p style={{ cursor: "pointer" }} onClick={this.follow.bind(this)}>
-                {this.state.user.followed ? "unfollow" : "follow"}
+              
+              <p>
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={this.toggleModel.bind(this, "Followers")}
+                  className="clickable"
+                >
+                  Followers
+                </span>
+                &nbsp;&nbsp;
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={this.toggleModel.bind(this, "Followings")}
+                  className="clickable"
+                >
+                  Followings
+                </span>
               </p>
-            )}
-            <p>
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={this.toggleModel.bind(this, "Followers")}
-                className="clickable"
-              >
-                Followers
-              </span>
-              &nbsp;&nbsp;
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={this.toggleModel.bind(this, "Followings")}
-                className="clickable"
-              >
-                Followings
-              </span>
-            </p>
+              {this.state.profile ? null : (
+                <p
+                  style={{ cursor: "pointer" }}
+                  onClick={this.follow.bind(this)}
+                >
+                  {this.state.user.followed ? "unfollow" : "follow"}
+                </p>
+              )}
             </div>
           </div>
-          <div style={{ flex: 7, marginLeft: "15px",}}>
-        <h3 className="text-muted">Products</h3>
-        <div style={{ display: "flex", flexDirection: "row", maxHeight: "75vh", overflowY : "scroll" }}>
-          <div style={{ flex: 5 }} >
-            {this.state.products.length == 0? <h5>No products yet 😢</h5> :<Posts items={this.state.products} />}
-          </div>
-          <div style={{ flex: 1 }}></div>
-        </div>
-            
+          <div style={{ flex: 7, marginLeft: "15px" }}>
+            <h3 className="text-muted">Products</h3>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                maxHeight: "75vh",
+                overflowY: "scroll"
+              }}
+            >
+              <div style={{ flex: 5 }}>
+                {this.state.products.length == 0 ? (
+                  <h5>No products yet 😢</h5>
+                ) : (
+                  <Posts items={this.state.products} />
+                )}
+              </div>
+              <div style={{ flex: 1 }}></div>
+            </div>
           </div>
         </div>
         {/* <hr /> */}

@@ -81,7 +81,7 @@ const Home = props => {
         <div style={{ flex: 1 }}>
           {/* <p>List Based</p> */}
           <Nav vertical>
-            <NavItem>
+            <NavItem style={{marginTop : "7px"}}>
               <NavLink style={{ cursor: "pointer" }} onClick={()=>{
                 http.get("/api/categories", (err, categories) => {
                   setCategories(categories);
@@ -120,7 +120,7 @@ const Home = props => {
             <Route
               path="/profile"
               exact
-              component={() => <Profile user={props.user} />}
+              component={() => <Profile rerender={props.rerender} user={props.user} />}
             />
 
             <Route

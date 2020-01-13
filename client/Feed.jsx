@@ -18,12 +18,12 @@ class Feed extends React.Component {
 
   render() {
     return (
-      <div><div style={{marginRight : "200px"}}>
-
-      </div>
-      <div className="m-4 p-4">
+      <div style={{display:"flex" , flexDirection : "row"}}>
+      <div style={{flex: 6}} className="m-4 p-4">
           <Posts items={this.state.products} />
-      </div></div>
+      </div>
+        <div style={{flex : 4}}></div>
+      </div>
     );
   }
 }

@@ -1,3 +1,4 @@
+// here we are requiring the express Router, passport and item, following, rate, review schemas and the upload file.
 const router = module.exports = require('express').Router()
 const Item = require('../model/item.js')
 const Follow = require('../model/following.js')
@@ -6,6 +7,7 @@ const Review = require('../model/review.js')
 const passport = require("passport")
 const upload = require("../upload.js")
 
+// this is the get route for the API/items for getting the items.
 router.get("/" , (req,res)=>{
   Item.find({}).sort({_id : -1}).populate("user").exec((err, items)=>{
     if (err) res.json({err})
@@ -13,6 +15,7 @@ router.get("/" , (req,res)=>{
   })
 })
 
+// this is the get route for the API/items/id for updating an item using the id.
 router.patch('/:id', function (req, res) {
 
     Item.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
@@ -24,6 +27,7 @@ router.patch('/:id', function (req, res) {
     });
 })
 
+// this is the get route for the API/items for postting the items.
 router.post('/', passport.authenticate("jwt" , {session:false}) , upload.single("photo"),  function (req, res) {
     req.body.photo = req.file.filename
     req.body.user = req.user._id
@@ -36,6 +40,7 @@ router.post('/', passport.authenticate("jwt" , {session:false}) , upload.single(
   });
 })
 
+// this is the get route for the API/items/home for getting the items in the home page.
 router.get("/home" , passport.authenticate("jwt" , {session:false}) , (req,res)=>{
 Follow.find({follower : req.user._id}, (err, data)=>{
   data = data.map(one =>{
@@ -49,6 +54,7 @@ Follow.find({follower : req.user._id}, (err, data)=>{
 })
 })
 
+// this is the get route for the API/items/id/reviews for postting the item's reviews.
 router.post('/:id/reviews', function (req, res) {
     let object = { item: req.params.id, user: req.user._id, content: req.body.content };
 
@@ -61,6 +67,7 @@ router.post('/:id/reviews', function (req, res) {
     });
 })
 
+// this is the get route for the API/items/id/rates for postting the item's rates.
 router.post('/:id/rates', function (req, res) {
     let object = { item: req.params.id, user: req.user._id, stars: req.body.stars };
 
@@ -73,6 +80,7 @@ router.post('/:id/rates', function (req, res) {
     });
 })
 
+// this is the get route for the API/items/id/rates for getting the item's rates.
 router.get('/:id/rates', function (req, res) {
 
     Rate.find({ item: req.params.id }, function (err, items) {
@@ -84,6 +92,7 @@ router.get('/:id/rates', function (req, res) {
     });
 })
 
+// this is the get route for the API/items/id/reviews for getting the item's reviews.
 router.get('/:id/reviews', function (req, res) {
 
     Review.find({ item: req.params.id }, function (err, items) {
@@ -95,17 +104,7 @@ router.get('/:id/reviews', function (req, res) {
     });
 })
 
-router.get('/:id/reviews', function (req, res) {
-
-    Review.find({ item: req.params.id }, function (err, items) {
-        if (err) {
-            return res.send(err)
-        } else {
-            return res.send(items)
-        }
-    });
-})
-
+// this is the get route for the API/items/reviews/id/toggle for updating reviews status.
 router.patch('/reviews/:id/toggle', function (req, res) {
 
     Review.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
@@ -117,6 +116,7 @@ router.patch('/reviews/:id/toggle', function (req, res) {
     });
 })
 
+// this is the get route for the API/items/rates/id/toggle for updating rates status.
 router.patch('/rates/:id/toggle', function (req, res) {
 
     Rate.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
@@ -128,6 +128,7 @@ router.patch('/rates/:id/toggle', function (req, res) {
     });
 })
 
+// this is the get route for the API/items/reviews/id for updating reviews.
 router.patch('/reviews/:id', function (req, res) {
 
     Review.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
@@ -139,6 +140,7 @@ router.patch('/reviews/:id', function (req, res) {
     });
 })
 
+// this is the get route for the API/items/rates/id for updating rates.
 router.patch('/rates/:id', function (req, res) {
 
     Rate.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, items) {
@@ -150,6 +152,7 @@ router.patch('/rates/:id', function (req, res) {
     });
 })
 
+// this is the get route for the API/items/id/toggle for updating item's status.
 router.patch('/:id/toggle', function (req, res) {
 
     Item.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
@@ -161,9 +164,7 @@ router.patch('/:id/toggle', function (req, res) {
     });
 })
 
-
-// POST item 
-
+// this is the get route for the API/items/id for postting the item.
 router.post('/:id', (req, res) => {
     const user = req.params.id;
     data = {
@@ -182,6 +183,7 @@ router.post('/:id', (req, res) => {
     })
 })
 
+// this is the get route for the API/items/id for getting the item by its id.
 router.get("/:id" , (req,res)=>{
     Item.findById(req.params.id).populate("user").exec((err, item)=>{
       if (err) res.json({err})

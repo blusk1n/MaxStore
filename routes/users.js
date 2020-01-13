@@ -18,8 +18,9 @@ router.get('/', function (req, res) {
 })
 
 
-
-//add user
+/**
+ * @param post handel add user.
+ */
 router.post('/', (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) res.json({ err })
@@ -36,7 +37,9 @@ router.post('/', (req, res) => {
 
 })
 
-//add folowers
+/**
+ * @param get handel add folowers to a user.
+ */
 router.get('/:id/follow', passport.authenticate("jwt", { session: false }), function (req, res) {
     var data = {
         follower: req.user._id,
@@ -60,7 +63,9 @@ router.get('/:id/follow', passport.authenticate("jwt", { session: false }), func
     })
 })
 
-//find folowers
+/**
+ * @param get handel find folowers of a user.
+ */
 router.get('/:id/followers', passport.authenticate("jwt" , {session:false}), function(req, res) {
     Follow.find({followed: ObjectId(req.params.id)}).populate("follower").exec(function(err, data) {
         if (err) res.json({success: false, err})
@@ -68,7 +73,9 @@ router.get('/:id/followers', passport.authenticate("jwt" , {session:false}), fun
     })
 })
 
-//find following
+/**
+ * @param get handel find whom following a user.
+ */
 router.get('/:id/followings', passport.authenticate("jwt" , {session:false}), function(req, res) {
     Follow.find({follower: ObjectId(req.params.id)}).populate("followed").exec(function(err, data) {
         if (err) res.json({success: false, err})
@@ -77,7 +84,9 @@ router.get('/:id/followings', passport.authenticate("jwt" , {session:false}), fu
 })
 
 
-
+/**
+ * @param get handel update a user info.
+ */
 router.patch('/:id', (req, res) => {
     User.findByIdAndUpdate(req.params.id, req.body, { new: true }, function (err, user) {
         if (err) {
@@ -96,7 +105,9 @@ router.patch('/:id', (req, res) => {
 })
 
 
-
+/**
+ * @param post handel user authentication.
+ */
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username
     const password = req.body.password
@@ -124,9 +135,10 @@ router.post('/authenticate', (req, res, next) => {
 
     })
 })
-
+/**
+ * @param get handel find a user.
+ */
 router.get('/:id', function (req, res) {
-    //fitch user fron Dbrgh
    User.findById(req.params.id, function(err, user) {
        if(err){
          res.json({err})
@@ -137,7 +149,9 @@ router.get('/:id', function (req, res) {
    })
     
 })
-
+/**
+ * @param get handel find all items of a user.
+ */
 router.get('/:username/items', passport.authenticate("jwt" , {session:false}) , function(req, res){
     if(req.user.username == req.params.username){
         Item.find({user : req.user._id}).sort({_id : -1}).exec((err,products)=>{
@@ -159,6 +173,10 @@ router.get('/:username/items', passport.authenticate("jwt" , {session:false}) , 
 
     }
 })
+/**
+ * @param get handel delete user in a way it will update the deactivation property so the user 
+ * account will be deactivated but not completely deleted from DB
+ */
 router.patch('/:id/toggle', function (req, res) {
 
     User.findByIdAndUpdate(req.params.id, { $set: req.body.deactivated }, function (err, items) {
@@ -171,11 +189,10 @@ router.patch('/:id/toggle', function (req, res) {
 })
 
 
-// Get all user's items 
-
+/**
+ * @param get handel find all items of a user in different way.
+ */
 router.get('/:id/items', (req, res) => {
-    // console.log(req.params.id)
-    // res.send(req.params.id)
     Items.find({ user: req.params.id }, (err, items) => {
         if (err) res.send({ message: err })
         res.send(items)

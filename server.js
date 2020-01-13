@@ -32,7 +32,7 @@ app.get('/api/uploads/:name'  , (req,res)=>{
 
 app.get("/api/categories/:name/items", (req,res)=>{
     Category.findOne({name : req.params.name}, (err, cat)=>{
-        Item.find({category: cat._id}).populate("user").exec((err,products)=>{
+        Item.find({category: cat._id}).sort({_id : -1}).populate("user").exec((err,products)=>{
             if(err) res.json({success : false , err})
             else res.json(products)
         })

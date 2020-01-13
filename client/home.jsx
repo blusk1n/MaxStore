@@ -240,6 +240,8 @@ const Home = props => {
                   method: "POST",
                   body: new FormData(document.getElementById("addProductForm")),
                   headers: { authorization: localStorage.getItem("token") }
+                }).then(data => {
+                  props.rerender()
                 });
               }}
             >

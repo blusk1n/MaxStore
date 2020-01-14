@@ -22,7 +22,7 @@ class Feed extends React.Component {
         <h3 className="text-muted py-2">Home</h3>
       <div style={{display:"flex" , flexDirection : "row", overflowY : "scroll" , maxHeight : "80vh"}}>
       <div style={{flex: 6}} className="my-2">
-          {this.state.products.length == 0? <h3 className="text-muted py-2">Follow some people 😉</h3> :<Posts items={this.state.products} />}
+          {this.state.products ? this.state.products.length == 0? <h3 className="text-muted py-2">Follow some people 😉</h3> :<Posts items={this.state.products} />:null}
       </div>
         <div style={{flex : 4}}></div>
       </div>

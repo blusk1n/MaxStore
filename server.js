@@ -12,7 +12,7 @@ const express           = require("express"),
       upload            = require("./upload.js"),
       port              = process.env.PORT || 3000
     
-mongoose.connect('mongodb://maxst0re:maxst0re@ds149676.mlab.com:49676/maxstore', { useNewUrlParser: true , useUnifiedTopology: true } , ()=>console.log("database is working")) 
+mongoose.connect('mongodb+srv://OMX:the6glcmab@cluster0-mq83j.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true , useUnifiedTopology: true } , ()=>console.log("database is working")) 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"))

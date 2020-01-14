@@ -20,6 +20,7 @@ router.get('/', function (req, res) {
 
 //add user
 router.post('/', (req, res) => {
+    console.log(req.body)
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) res.json({ err })
         else {
@@ -104,6 +105,8 @@ router.patch('/:id', (req, res) => {
 
 
 router.post('/authenticate', (req, res, next) => {
+    console.log(req.body)
+
     const username = req.body.username
     const password = req.body.password
     User.findOne({ username }, (err, user) => {
@@ -132,6 +135,7 @@ router.post('/authenticate', (req, res, next) => {
 })
 
 router.get('/:id', function (req, res) {
+
     //fitch user fron Dbrgh
    User.findById(req.params.id, function(err, user) {
        if(err){

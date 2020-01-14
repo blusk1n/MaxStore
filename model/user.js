@@ -1,5 +1,7 @@
+// here we are requiring the mongoose and saving into a constant called mongoose
 const mongoose = require('mongoose');
 
+// this schema is for the user
 const Schema = mongoose.Schema({
     username: {
         type: String,
@@ -40,15 +42,5 @@ const Schema = mongoose.Schema({
     }
 });
 
-
-
-
-// module.exports.comparePassword = function(password, hash, callback) {
-//     bcrypt.compare(password, hash, (err, isMatch) => {
-//         if(err) throw err;
-//         callback(null, isMatch);
-//     })
-// }
-  
-  
+// here we are exporting the model
 module.exports = mongoose.model('user', Schema)
